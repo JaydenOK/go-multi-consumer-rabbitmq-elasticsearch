@@ -1,0 +1,41 @@
+# app config
+app:
+  logFile: logs/app.log
+  httpPort: 8080
+  webSocketPort: 8089
+  rpcPort: 9001
+  httpUrl: 127.0.0.1:8080
+  webSocketUrl:  127.0.0.1:8089
+
+mysql:
+  host: "192.168.71.175"
+  port: 3306
+  username: "lizuobing"
+  password: "lizuobing#Hsd1h"
+  database: "yb_new_hwc"
+
+redis:
+  host: "192.168.71.238"
+  port: 6379
+  username: ""
+  password: "654321"
+  database: ""
+
+mongo:
+  host: "192.168.71.238"
+  port: 27017
+  username: "hwcuser"
+  password: "hwc@2018"
+  database: "hwc"
+
+rabbitmq:
+  host: "192.168.71.210"
+  port: 5672
+  username: "admin"
+  password: "admin"
+
+elasticsearch:
+  host: "192.168.71.238"
+  port: 9200
+  username: ""
+  password: ""

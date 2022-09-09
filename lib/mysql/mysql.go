@@ -17,6 +17,7 @@ func NewMysqlClient() {
 	password := viper.GetString("mysql.password")
 	port := viper.GetString("mysql.port")
 	database := viper.GetString("mysql.database")
+	//连接数据库的时候加入参数parseTime=true 和loc=Local ，解决时间格式化问题
 	dsn = username + ":" + password + "@tcp(" + host + ":" + port + ")/" + database + "?charset=utf8&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.New(mysql.Config{
 		DSN:                       dsn,   // DSN data source name

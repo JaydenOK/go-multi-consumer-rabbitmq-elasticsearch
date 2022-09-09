@@ -14,6 +14,7 @@ func main() {
 
 	r := gin.Default()
 	routers.InitRouter(r)
+
 	httpPort := viper.GetString("app.httpPort")
 	r.Run(":" + string(httpPort))
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"app/lib/mysql"
+	"app/lib/redis"
 	"app/routers"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -10,7 +11,8 @@ import (
 
 func main() {
 	loadConfig()
-	mysql.NewMysqlClient()
+	mysql.InitMysqlClient()
+	redis.InitRedisClient()
 
 	r := gin.Default()
 	routers.InitRouter(r)

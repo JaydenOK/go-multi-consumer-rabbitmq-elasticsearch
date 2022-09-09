@@ -9,10 +9,26 @@ import (
 
 type LocalTime time.Time
 
-//实现MarshalJSON接口，格式化数据
+//实现MarshalJSON接口，格式化数据，解决 c.JSON 时解析值的问题
 func (t LocalTime) MarshalJSON() ([]byte, error) {
+	if &t == nil {
+		return []byte("null"), nil
+	}
 	stamp := fmt.Sprintf("\"%s\"", time.Time(t).Format(constant.TimeFormat))
 	return []byte(stamp), nil
+}
+
+//在 c.ShouldBindJSON 时，会调用 field.UnmarshalJSON 方法
+func (t *LocalTime) UnmarshalJSON(data []byte) (err error) {
+	// 空值不进行解析
+	if len(data) == 2 {
+		*t = LocalTime(time.Time{})
+		return
+	}
+	// 指定解析的格式
+	now, err := time.Parse(`"`+constant.TimeFormat+`"`, string(data))
+	*t = LocalTime(now)
+	return
 }
 
 // 写入 mysql 时调用

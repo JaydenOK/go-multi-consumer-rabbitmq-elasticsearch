@@ -17,9 +17,8 @@ mysql:
 redis:
   host: "192.168.71.238"
   port: 6379
-  username: ""
+  #  username: ""
   password: "654321"
-  database: ""
 
 mongo:
   host: "192.168.71.238"

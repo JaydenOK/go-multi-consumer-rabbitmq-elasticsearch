@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"fmt"
 	"github.com/spf13/viper"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -10,7 +11,7 @@ var (
 	mysqlClient *gorm.DB
 )
 
-func NewMysqlClient() {
+func InitMysqlClient() {
 	var dsn string
 	host := viper.GetString("mysql.host")
 	username := viper.GetString("mysql.username")
@@ -28,6 +29,7 @@ func NewMysqlClient() {
 		SkipInitializeWithVersion: false, // 根据当前 MySQL 版本自动配置
 	}), &gorm.Config{})
 	if err != nil {
+		fmt.Println("mysql连接异常：", err.Error())
 		panic(err)
 	}
 	mysqlClient = db

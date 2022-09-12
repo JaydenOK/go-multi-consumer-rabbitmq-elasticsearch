@@ -20,12 +20,10 @@ func InitRouter(r *gin.Engine) {
 	userGroup := r.Group("/user")
 	{
 		var userController controllers.UserController
-		userGroup.GET("register", userController.Register)
-		userGroup.GET("login", userController.Login)
-		userGroup.GET("list", userController.Lists)
-		userGroup.POST("add", userController.Add)
-		userGroup.POST("update", userController.Update)
-		userGroup.POST("delete", userController.Delete)
+		userGroup.POST("register", userController.Register)
+		userGroup.GET("list", userController.List)
+		userGroup.POST("signIn", userController.SignIn)
+		userGroup.POST("signOut", userController.SignOut)
 	}
 
 }

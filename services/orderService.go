@@ -1,7 +1,7 @@
 package services
 
 import (
-	"app/lib/mysql"
+	"app/lib/mysqllib"
 	"app/models"
 	"encoding/json"
 	"fmt"
@@ -13,7 +13,7 @@ import (
 type OrderService struct {
 }
 
-//订单查询
+// 订单查询
 func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 	page, _ := strconv.Atoi(ctx.Query("page"))
 	pageSize, _ := strconv.Atoi(ctx.Query("pageSize"))
@@ -29,7 +29,7 @@ func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 	}
 	var order models.OrderModel    //用于查找单个
 	var orders []models.OrderModel //用于查找多个
-	db := mysql.GetMysqlClient().Table(order.TableName())
+	db := mysqllib.GetMysqlClient().Table(order.TableName())
 	if orderId != "" {
 		db = db.Where("order_id=?", orderId)
 	}
@@ -48,14 +48,14 @@ func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 	return orders
 }
 
-//新增订单 orderModel指定的属性
+// 新增订单 orderModel指定的属性
 func (orderService *OrderService) Add(ctx *gin.Context) interface{} {
 	var orderModel models.OrderModel
 	if err := ctx.ShouldBind(&orderModel); err != nil {
 		fmt.Println("bind error", orderModel)
 		return nil
 	}
-	mysqlClient := mysql.GetMysqlClient()
+	mysqlClient := mysqllib.GetMysqlClient()
 	result := mysqlClient.Create(&orderModel) // 通过数据的指针来创建
 	if result.Error != nil {
 		fmt.Println(result.Error)
@@ -64,7 +64,7 @@ func (orderService *OrderService) Add(ctx *gin.Context) interface{} {
 	return "新增订单成功，id为：" + strconv.Itoa(int(orderModel.Id))
 }
 
-//通过order_id更新订单信息
+// 通过order_id更新订单信息
 func (orderService *OrderService) Update(ctx *gin.Context) interface{} {
 	var orderModel models.OrderModel
 	byteData, _ := ctx.GetRawData()
@@ -76,20 +76,20 @@ func (orderService *OrderService) Update(ctx *gin.Context) interface{} {
 		return "数据解析异常，请核对：" + err.Error()
 	}
 	fmt.Println(obj)
-	mysqlClient := mysql.GetMysqlClient()
+	mysqlClient := mysqllib.GetMysqlClient()
 	//批量更新
 	result := mysqlClient.Model(&models.OrderModel{}).Where("order_id = ?", obj["order_id"]).Updates(obj)
 	return "更新订单成功，id为：" + strconv.Itoa(int(result.RowsAffected))
 }
 
-//通过order_id删除订单
+// 通过order_id删除订单
 func (orderService *OrderService) Delete(ctx *gin.Context) interface{} {
 	var orderModel models.OrderModel
 	orderId := ctx.PostForm("order_id")
 	if orderId == "" {
 		return ""
 	}
-	mysqlClient := mysql.GetMysqlClient()
+	mysqlClient := mysqllib.GetMysqlClient()
 	result := mysqlClient.First(&orderModel, "order_id = ?", orderId)
 	if result.Error != nil || result.RowsAffected == 0 {
 		fmt.Println(result.Error)

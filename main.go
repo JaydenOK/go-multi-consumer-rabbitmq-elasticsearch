@@ -1,8 +1,8 @@
 package main
 
 import (
-	"app/lib/mysql"
-	"app/lib/redis"
+	"app/lib/mysqllib"
+	"app/lib/redislib"
 	"app/routers"
 	"fmt"
 	"github.com/gin-gonic/gin"
@@ -11,8 +11,8 @@ import (
 
 func main() {
 	loadConfig()
-	mysql.InitMysqlClient()
-	redis.InitRedisClient()
+	mysqllib.InitMysqlClient()
+	redislib.InitRedisClient()
 
 	r := gin.Default()
 	routers.InitRouter(r)
@@ -21,7 +21,7 @@ func main() {
 	r.Run(":" + string(httpPort))
 }
 
-//加载配置文件信息到viper
+// 加载配置文件信息到viper
 func loadConfig() {
 	viper.SetConfigName("app")
 	viper.SetConfigType("yaml")

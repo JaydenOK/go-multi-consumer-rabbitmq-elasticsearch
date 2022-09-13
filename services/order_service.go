@@ -79,6 +79,7 @@ func (orderService *OrderService) Update(ctx *gin.Context) interface{} {
 	mysqlClient := mysqllib.GetMysqlClient()
 	//批量更新
 	result := mysqlClient.Model(&models.OrderModel{}).Where("order_id = ?", obj["order_id"]).Updates(obj)
+
 	return "更新订单成功，id为：" + strconv.Itoa(int(result.RowsAffected))
 }
 

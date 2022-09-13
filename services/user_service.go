@@ -34,7 +34,7 @@ func (userService *UserService) Register(ctx *gin.Context) interface{} {
 			Password: password,
 		}
 		newUserListJson, _ := json.Marshal(users)
-		redisClient.Set(UserListKey, newUserListJson, time.Duration(86400*time.Second))
+		redisClient.Set(UserListKey, newUserListJson, 86400*time.Second)
 		return "注册成功"
 	} else {
 		return "用户已注册"
@@ -70,7 +70,7 @@ func (userService *UserService) SignIn(ctx *gin.Context) interface{} {
 			Password: password,
 		}
 		newLoginUserListJson, _ := json.Marshal(loginUsers)
-		redisClient.Set(LoginUserListKey, newLoginUserListJson, time.Duration(86400*time.Second))
+		redisClient.Set(LoginUserListKey, newLoginUserListJson, 86400*time.Second)
 		return "登录成功"
 	}
 }
@@ -88,7 +88,7 @@ func (userService *UserService) SignOut(ctx *gin.Context) interface{} {
 	} else {
 		delete(loginUsers, username)
 		newLoginUserListJson, _ := json.Marshal(loginUsers)
-		redisClient.Set(LoginUserListKey, newLoginUserListJson, time.Duration(86400*time.Second))
+		redisClient.Set(LoginUserListKey, newLoginUserListJson, 86400*time.Second)
 		return "退出登录成功"
 	}
 }

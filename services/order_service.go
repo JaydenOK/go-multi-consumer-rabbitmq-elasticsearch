@@ -66,7 +66,7 @@ func (orderService *OrderService) Add(ctx *gin.Context) interface{} {
 		return "新增订单失败:" + result.Error.Error()
 	}
 	//发送mq通知程序，更新es信息
-	orderService.eventManager.Trigger(constants.EventOrderChange, orderModel.Id)
+	orderService.eventManager.Trigger(constants.EventOrderChange, orderModel.OrderId)
 	return "新增订单成功，id为：" + strconv.Itoa(int(orderModel.Id))
 }
 

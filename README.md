@@ -1,7 +1,8 @@
 # jayden-framework-go
-
+##
 本项目流程及目的：业务数据保存mysql后，发送rabbitmq，启动go协程消费队列数据，将数据推送到es，业务多条件查询时，直接查es，解决大数据查询慢的问题。 
-gin框架，mvc架构（controller-service-model）   
+gin框架，mvc架构（controller-service-model）
+   
  ```shell script
 redis->mysql->rabbitmq(kafka)->go comsume->elasticsearch
 ```
@@ -22,6 +23,8 @@ app:
     main.go 程序入口文件
 ```
 
+版本：
 ```go
 go version 1.19
+gin v1.8.1
 ```

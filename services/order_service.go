@@ -1,7 +1,9 @@
 package services
 
 import (
-	"app/lib/mysqllib"
+	"app/constants"
+	"app/events"
+	"app/libs/mysqllib"
 	"app/models"
 	"encoding/json"
 	"fmt"
@@ -11,6 +13,7 @@ import (
 )
 
 type OrderService struct {
+	eventManager events.EventManager
 }
 
 // 订单查询
@@ -50,6 +53,7 @@ func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 
 // 新增订单 orderModel指定的属性
 func (orderService *OrderService) Add(ctx *gin.Context) interface{} {
+	orderService.registerEvent()
 	var orderModel models.OrderModel
 	if err := ctx.ShouldBind(&orderModel); err != nil {
 		fmt.Println("bind error", orderModel)
@@ -61,11 +65,14 @@ func (orderService *OrderService) Add(ctx *gin.Context) interface{} {
 		fmt.Println(result.Error)
 		return "新增订单失败:" + result.Error.Error()
 	}
+	//发送mq通知程序，更新es信息
+	orderService.eventManager.Trigger(constants.EventOrderChange, orderModel.Id)
 	return "新增订单成功，id为：" + strconv.Itoa(int(orderModel.Id))
 }
 
 // 通过order_id更新订单信息
 func (orderService *OrderService) Update(ctx *gin.Context) interface{} {
+	orderService.registerEvent()
 	var orderModel models.OrderModel
 	byteData, _ := ctx.GetRawData()
 	if err := json.Unmarshal(byteData, &orderModel); err != nil {
@@ -79,12 +86,14 @@ func (orderService *OrderService) Update(ctx *gin.Context) interface{} {
 	mysqlClient := mysqllib.GetMysqlClient()
 	//批量更新
 	result := mysqlClient.Model(&models.OrderModel{}).Where("order_id = ?", obj["order_id"]).Updates(obj)
-
+	//发送mq通知程序，更新es信息，引用传递
+	orderService.eventManager.Trigger(constants.EventOrderChange, obj["order_id"].(string))
 	return "更新订单成功，id为：" + strconv.Itoa(int(result.RowsAffected))
 }
 
 // 通过order_id删除订单
 func (orderService *OrderService) Delete(ctx *gin.Context) interface{} {
+	orderService.registerEvent()
 	var orderModel models.OrderModel
 	orderId := ctx.PostForm("order_id")
 	if orderId == "" {
@@ -98,5 +107,12 @@ func (orderService *OrderService) Delete(ctx *gin.Context) interface{} {
 	}
 	//批量删除
 	result = mysqlClient.Where("order_id = ?", orderId).Delete(&models.OrderModel{})
+	//发送mq通知程序，更新es信息，引用传递
+	orderService.eventManager.Trigger(constants.EventOrderChange, orderId)
 	return "删除订单成功:" + strconv.Itoa(int(result.RowsAffected))
+}
+
+// 注册绑定事件
+func (orderService *OrderService) registerEvent() {
+	orderService.eventManager.Bind(constants.EventOrderChange, &events.OrderEventHandler{})
 }

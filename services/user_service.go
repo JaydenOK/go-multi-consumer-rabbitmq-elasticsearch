@@ -1,7 +1,7 @@
 package services
 
 import (
-	"app/lib/redislib"
+	"app/libs/redislib"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"time"

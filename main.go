@@ -1,8 +1,8 @@
 package main
 
 import (
-	"app/lib/mysqllib"
-	"app/lib/redislib"
+	"app/libs/mysqllib"
+	"app/libs/redislib"
 	"app/routers"
 	"fmt"
 	"github.com/gin-gonic/gin"

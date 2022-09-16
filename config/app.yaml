@@ -28,10 +28,10 @@ mongo:
   database: "hwc"
 
 rabbitmq:
-  host: "192.168.71.210"
+  host: "192.168.71.91"
   port: 5672
   username: "admin"
-  password: "admin"
+  password: "admin123."
 
 elasticsearch:
   host: "192.168.71.238"

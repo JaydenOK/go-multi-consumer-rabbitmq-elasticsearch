@@ -63,7 +63,7 @@ func InterfaceToString(value interface{}) string {
 
 // 字符串转interface
 func StringToInterface(s string) interface{} {
-	return s
-	//var x interface{} = s
-	//return x
+	//return s	//直接返回
+	var x interface{} = s
+	return x
 }

@@ -2,12 +2,14 @@ package constants
 
 const TimeFormat = "2006-01-02 15:04:05"
 
-const (
-	QueueOrderChange   string = "OrderChange"
-	QueuePackageChange string = "PackageChange"
-)
+// 订单变更交换机名（事件）及队列名
+const EventOrderChange string = "OrderChangeEx"
+const QueueOrderChange string = "OrderChangeQueue"
 
-const (
-	EventOrderChange   string = "OrderChange"
-	EventPackageChange string = "PackageChange"
-)
+// 包裹
+const QueuePackageChange string = "PackageChangeEx"
+const EventPackageChange string = "PackageChangeQueue"
+
+// 库存
+const EventStockChange string = "StockChangeEx"
+const QueueStockChange string = "StockChangeQueue"

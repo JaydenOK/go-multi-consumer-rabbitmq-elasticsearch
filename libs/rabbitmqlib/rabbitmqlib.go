@@ -1,6 +1,7 @@
 package rabbitmqlib
 
 import (
+	"app/utils"
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
@@ -174,4 +175,73 @@ func (rabbitMQ *RabbitMQ) InitRabbitMQ() error {
 		panic(v)
 	}
 	return err
+}
+
+// 初始化消费服务
+// 直接发送消息，direct模式，路由设置与队列名一致
+func (rabbitMQ *RabbitMQ) ConsumeInit(exchangeName string, queueName string) error {
+	rabbitMQ.exchangeName = exchangeName
+	rabbitMQ.queueName = queueName
+	rabbitMQ.bindKey = queueName
+	rabbitMQ.exchangeType = "direct"
+	if err := rabbitMQ.channel.ExchangeDeclare(
+		rabbitMQ.exchangeName,
+		rabbitMQ.exchangeType,
+		true,
+		false,
+		false,
+		false,
+		nil,
+	); err != nil {
+		fmt.Println("绑定exchange异常：", err.Error())
+		rabbitMQ.close()
+		panic(utils.StringToInterface("绑定exchange异常" + err.Error()))
+	}
+
+	if _, err := rabbitMQ.channel.QueueDeclare(
+		rabbitMQ.queueName,
+		true,
+		false,
+		false,
+		false,
+		nil,
+	); err != nil {
+		fmt.Println("绑定queue异常：", err.Error())
+		rabbitMQ.close()
+		panic(utils.StringToInterface("创建queue异常" + err.Error()))
+	}
+
+	if err := rabbitMQ.channel.QueueBind(
+		rabbitMQ.queueName,
+		rabbitMQ.bindKey,
+		rabbitMQ.exchangeName,
+		false,
+		nil,
+	); err != nil {
+		fmt.Println("绑定queue异常：", err.Error())
+		rabbitMQ.close()
+		panic(utils.StringToInterface("绑定queue异常" + err.Error()))
+	}
+
+	return nil
+}
+
+// 消费
+func (rabbitMQ *RabbitMQ) Consume(consumerTag string) (<-chan amqp.Delivery, error) {
+	//只读信道，接收队列数据
+	var delivery <-chan amqp.Delivery
+	var err error
+	if delivery, err = rabbitMQ.channel.Consume(
+		rabbitMQ.queueName,
+		consumerTag,
+		false,
+		false,
+		false,
+		false,
+		nil,
+	); err != nil {
+		rabbitMQ.close()
+		return nil, err
+	}
+	return delivery, nil
 }

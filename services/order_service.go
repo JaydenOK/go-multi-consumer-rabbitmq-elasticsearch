@@ -78,14 +78,34 @@ func (orderService *OrderService) Update(ctx *gin.Context) interface{} {
 	if err := json.Unmarshal(byteData, &orderModel); err != nil {
 		return "数据解析异常，请核对：" + err.Error()
 	}
+	mysqlClient := mysqllib.GetMysqlClient()
 	obj := make(map[string]interface{})
 	if err := json.Unmarshal(byteData, &obj); err != nil {
 		return "数据解析异常，请核对：" + err.Error()
 	}
-	fmt.Println(obj)
-	mysqlClient := mysqllib.GetMysqlClient()
-	//批量更新
+	//多组批量更新
 	result := mysqlClient.Model(&models.OrderModel{}).Where("order_id = ?", obj["order_id"]).Updates(obj)
+
+	// 指定字段更新。使用 Struct 进行 Select（会 select 零值的字段）
+	//result :=mysqlClient.Model(&orderModel).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
+
+	// Select 所有字段（查询包括零值字段的所有字段）
+	//db.Model(&user).Select("Name", "Age").Updates(User{Name: "new_name", Age: 0})
+	//mysqlClient.Model(&orderModel).Select("*").Update(models.OrderModel{
+	//	Id:               0,
+	//	OrderId:          "",
+	//	PlatformCode:     "",
+	//	AccountId:        "",
+	//	OrderStatus:      "",
+	//	ShipName:         "",
+	//	ShipStreet1:      "",
+	//	ShipCountry:      "",
+	//	ShipCityName:     "",
+	//	ShipCode:         "",
+	//	ShipPhone:        "",
+	//	MiddleCreateTime: utils.LocalTime{},
+	//})
+
 	//发送mq通知程序，更新es信息，引用传递
 	orderService.eventManager.Trigger(constants.EventOrderChange, obj["order_id"].(string))
 	return "更新订单成功，id为：" + strconv.Itoa(int(result.RowsAffected))

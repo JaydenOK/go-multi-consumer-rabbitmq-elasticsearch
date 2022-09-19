@@ -19,7 +19,9 @@ app:
     models 模型
     routers 路由
     services 服务层
-    utils 助手类库
+    utils 助手类库 
+    tasks 消费者监听任务 
+
     main.go 程序入口文件
 ```
 

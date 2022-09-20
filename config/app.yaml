@@ -34,7 +34,7 @@ rabbitmq:
   password: "admin123."
 
 elasticsearch:
-  host: "192.168.71.238"
+  host: "192.168.92.65"
   port: 9200
   username: ""
   password: ""

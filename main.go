@@ -1,6 +1,7 @@
 package main
 
 import (
+	"app/libs/elasticsearchlib"
 	"app/libs/mysqllib"
 	"app/libs/redislib"
 	"app/routers"
@@ -22,7 +23,7 @@ func main() {
 	//初始化http路由
 	r := gin.Default()
 	routers.InitRouter(r)
-
+	elasticsearchlib.InitESClient()
 	//启动消费者监听协程
 	tasks.Run()
 

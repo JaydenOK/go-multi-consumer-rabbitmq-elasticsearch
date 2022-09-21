@@ -6,13 +6,23 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//order控制器类
+// order控制器类
 type OrderController struct {
 	orderService services.OrderService
 }
 
 func (c *OrderController) Lists(ctx *gin.Context) {
 	returnData := c.orderService.Lists(ctx)
+	if returnData == nil {
+		utils.FailResponse(ctx, nil)
+		return
+	}
+	utils.SuccessResponse(ctx, returnData)
+}
+
+// es订单列表
+func (c *OrderController) EsLists(ctx *gin.Context) {
+	returnData := c.orderService.EsLists(ctx)
 	if returnData == nil {
 		utils.FailResponse(ctx, nil)
 		return

@@ -11,6 +11,7 @@ func InitRouter(r *gin.Engine) {
 	{
 		var orderController controllers.OrderController
 		orderGroup.GET("list", orderController.Lists)
+		orderGroup.GET("esList", orderController.EsLists)
 		orderGroup.POST("add", orderController.Add)
 		orderGroup.POST("update", orderController.Update)
 		orderGroup.POST("delete", orderController.Delete)

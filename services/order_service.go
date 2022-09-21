@@ -51,6 +51,26 @@ func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 	return orders
 }
 
+// es订单列表
+func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
+	page, _ := strconv.Atoi(ctx.Query("page"))
+	pageSize, _ := strconv.Atoi(ctx.Query("pageSize"))
+	orderId := ctx.Query("order_id")
+	platformCode := ctx.Query("platform_code")
+	middleCreateTimeStart := ctx.Query("middle_create_time_start")
+	middleCreateTimeEnd := ctx.Query("middle_create_time_end")
+	if page < 0 {
+		page = 1
+	}
+	if pageSize < 0 {
+		pageSize = 50
+	}
+	var order models.OrderModel    //用于查找单个
+	var orders []models.OrderModel //用于查找多个
+
+	return nil
+}
+
 // 新增订单 orderModel指定的属性
 func (orderService *OrderService) Add(ctx *gin.Context) interface{} {
 	orderService.registerEvent()

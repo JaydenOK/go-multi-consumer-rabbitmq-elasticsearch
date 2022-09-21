@@ -152,7 +152,7 @@ func (orderConsumer *OrderConsumer) pushOrderToElasticSearch(orderIds []string) 
 			//索引创建或更新索引中的文档。
 			request := esapi.IndexRequest{
 				Index:      "order",
-				DocumentID: strconv.Itoa(int(orderModel.Id) + 1),
+				DocumentID: strconv.Itoa(int(orderModel.Id)),
 				Body:       bytes.NewReader(data),
 				Refresh:    "true",
 			}

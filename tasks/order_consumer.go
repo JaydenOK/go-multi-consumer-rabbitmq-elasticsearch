@@ -118,26 +118,25 @@ func (orderConsumer *OrderConsumer) handle(delivery amqp.Delivery) error {
 		fmt.Println(msg)
 		return errors.New(msg)
 	}
-	if err := orderConsumer.pushOrderToElasticSearch(orderId.(string)); err != nil {
-		msg := fmt.Sprintf("推送es异常，%s", orderId)
+	orderIds := []string{orderId.(string)}
+	if err := orderConsumer.pushOrderToElasticSearch(orderIds); err != nil {
+		msg := fmt.Sprintf("推送es异常，%s", orderIds)
 		fmt.Println(msg)
 		return errors.New(msg)
 	}
 	return nil
 }
 
-func (orderConsumer *OrderConsumer) pushOrderToElasticSearch(orderId string) error {
+func (orderConsumer *OrderConsumer) pushOrderToElasticSearch(orderIds []string) error {
 	//@todo do something 将订单变更信息推送es
 	mysqlClient := mysqllib.GetMysqlClient()
-	var orderModel models.OrderModel
-	mysqlClient.Where("order_id = ?", orderId).Find(&orderModel)
-	if orderModel.OrderId == "" {
-		msg := fmt.Sprintf("推送的数据错误，order_id不存在")
+	var orderModels []models.OrderModel
+	mysqlClient.Where("order_id in ?", orderIds).Find(&orderModels)
+	if orderModels == nil {
+		msg := fmt.Sprintf("推送的数据错误，订单没找到:%v", orderIds)
 		fmt.Println(msg)
 		return errors.New(msg)
 	}
-	var orderModels []models.OrderModel
-	orderModels = append(orderModels, orderModel)
 	esClient := elasticsearchlib.GetClient()
 	var wg sync.WaitGroup
 	for i, orderModel := range orderModels {

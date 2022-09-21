@@ -16,31 +16,17 @@ func InitESClient() {
 	password := viper.GetString("elasticsearch.password")
 	address := "http://" + host + ":" + port
 	cfg := elasticsearch.Config{
-		Addresses:               []string{address},
-		Username:                username,
-		Password:                password,
-		CloudID:                 "",
-		APIKey:                  "",
-		ServiceToken:            "",
-		CertificateFingerprint:  "",
-		Header:                  nil,
-		CACert:                  nil,
-		RetryOnStatus:           nil,
-		DisableRetry:            false,
-		MaxRetries:              0,
-		RetryOnError:            nil,
-		CompressRequestBody:     false,
-		DiscoverNodesOnStart:    false,
-		DiscoverNodesInterval:   0,
-		EnableMetrics:           false,
-		EnableDebugLogger:       false,
-		EnableCompatibilityMode: false,
-		DisableMetaHeader:       false,
-		RetryBackoff:            nil,
-		Transport:               nil,
-		Logger:                  nil,
-		Selector:                nil,
-		ConnectionPoolFunc:      nil,
+		Addresses: []string{address},
+		Username:  username,
+		Password:  password,
+		//Transport: &http.Transport{
+		//	MaxIdleConnsPerHost:   10,
+		//	ResponseHeaderTimeout: time.Second,
+		//	DialContext:           (&net.Dialer{Timeout: time.Second}).DialContext,
+		//	TLSClientConfig: &tls.Config{
+		//		MinVersion:         tls.VersionTLS12,
+		//	},
+		//},
 	}
 	esClient, err = elasticsearch.NewClient(cfg)
 	if err != nil {
@@ -50,7 +36,6 @@ func InitESClient() {
 	if err != nil {
 		log.Fatalf("Error getting response: %s", err)
 	}
-	defer res.Body.Close()
 	log.Println(res)
 }
 

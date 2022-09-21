@@ -1,11 +1,21 @@
 package tasks
 
 import (
+	"app/libs/elasticsearchlib"
+	"app/libs/mysqllib"
 	"app/libs/rabbitmqlib"
+	"app/models"
 	"app/utils"
+	"bytes"
+	"context"
+	"encoding/json"
+	"errors"
 	"fmt"
+	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/streadway/amqp"
+	"log"
 	"strconv"
+	"sync"
 )
 
 type OrderConsumer struct {
@@ -95,9 +105,80 @@ func (orderConsumer *OrderConsumer) start() error {
 
 // 业务逻辑
 func (orderConsumer *OrderConsumer) handle(delivery amqp.Delivery) error {
-
 	fmt.Printf("order_consumer[%s]接收到数据：%s", delivery.ConsumerTag, string(delivery.Body))
-	//@todo do something
+	var mqData map[string]interface{}
+	if err := json.Unmarshal(delivery.Body, &mqData); err != nil {
+		fmt.Println("队列json数据解析异常:", string(delivery.Body), err.Error())
+		return err
+	}
+	key := "order_id"
+	orderId, ok := mqData[key]
+	if ok != true {
+		msg := fmt.Sprintf("推送的数据错误，%s 不存在", key)
+		fmt.Println(msg)
+		return errors.New(msg)
+	}
+	if err := orderConsumer.pushOrderToElasticSearch(orderId.(string)); err != nil {
+		msg := fmt.Sprintf("推送es异常，%s", orderId)
+		fmt.Println(msg)
+		return errors.New(msg)
+	}
+	return nil
+}
 
+func (orderConsumer *OrderConsumer) pushOrderToElasticSearch(orderId string) error {
+	//@todo do something 将订单变更信息推送es
+	mysqlClient := mysqllib.GetMysqlClient()
+	var orderModel models.OrderModel
+	mysqlClient.Where("order_id = ?", orderId).Find(&orderModel)
+	if orderModel.OrderId == "" {
+		msg := fmt.Sprintf("推送的数据错误，order_id不存在")
+		fmt.Println(msg)
+		return errors.New(msg)
+	}
+	var orderModels []models.OrderModel
+	orderModels = append(orderModels, orderModel)
+	esClient := elasticsearchlib.GetClient()
+	var wg sync.WaitGroup
+	for i, orderModel := range orderModels {
+		wg.Add(1)
+		go func(orderModel models.OrderModel) {
+			defer wg.Done()
+			// 构建请求json数据
+			data, err := json.Marshal(orderModel)
+			if err != nil {
+				log.Fatalf("Error marshaling document: %s", err)
+			}
+			//设置请求对象。
+			//索引创建或更新索引中的文档。
+			request := esapi.IndexRequest{
+				Index:      "order",
+				DocumentID: strconv.Itoa(int(orderModel.Id) + 1),
+				Body:       bytes.NewReader(data),
+				Refresh:    "true",
+			}
+
+			// 与客户端执行请求。
+			res, err := request.Do(context.Background(), esClient)
+			if err != nil {
+				log.Fatalf("Error getting response: %s", err)
+			}
+			defer res.Body.Close()
+
+			if res.IsError() {
+				log.Printf("[%s] Error indexing document ID=%d", res.Status(), i+1)
+			} else {
+				// 将响应反序列化为映射。
+				var r map[string]interface{}
+				if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
+					log.Printf("Error parsing the response body: %s", err)
+				} else {
+					// 打印响应状态和索引文档版本。
+					log.Printf("[%s] %s; version=%d", res.Status(), r["result"], int(r["_version"].(float64)))
+				}
+			}
+		}(orderModel)
+	}
+	wg.Wait()
 	return nil
 }

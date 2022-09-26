@@ -3,11 +3,16 @@ package services
 import (
 	"app/constants"
 	"app/events"
+	"app/libs/elasticsearchlib"
 	"app/libs/mysqllib"
 	"app/models"
+	"bytes"
+	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/elastic/go-elasticsearch/v8/esapi"
 	"github.com/gin-gonic/gin"
+	"log"
 	"strconv"
 	"strings"
 )
@@ -56,6 +61,7 @@ func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
 	page, _ := strconv.Atoi(ctx.Query("page"))
 	pageSize, _ := strconv.Atoi(ctx.Query("pageSize"))
 	orderId := ctx.Query("order_id")
+	orderStatus := ctx.Query("order_status")
 	platformCode := ctx.Query("platform_code")
 	middleCreateTimeStart := ctx.Query("middle_create_time_start")
 	middleCreateTimeEnd := ctx.Query("middle_create_time_end")
@@ -65,10 +71,97 @@ func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
 	if pageSize < 0 {
 		pageSize = 50
 	}
-	var order models.OrderModel    //用于查找单个
-	var orders []models.OrderModel //用于查找多个
+	//var orders []models.OrderModel //用于查找多个
 
-	return nil
+	esClient := elasticsearchlib.GetClient()
+
+	var res *esapi.Response
+	var err error
+	var r map[string]interface{}
+	index := "order" //查询Index库
+	//构造请求参数体
+	var buf bytes.Buffer
+	match := make(map[string]interface{})
+	terms := make(map[string]interface{})
+
+	//分词查询
+	if orderId != "" {
+		match["order_id"] = orderId
+	}
+
+	//关键词完全匹配
+	if orderStatus != "" {
+		match["order_status"] = orderStatus
+	}
+
+	//多条件等值查询，平台code查询，支持逗号分隔
+	if platformCode != "" {
+		platformCodeList := strings.Split(platformCode, ",")
+		terms["platform_code"] = platformCodeList
+	}
+
+	//时间区间
+	if middleCreateTimeStart != "" && middleCreateTimeEnd != "" {
+		match["create_time"] = middleCreateTimeEnd
+	}
+
+	query := map[string]interface{}{
+		"query": map[string]interface{}{
+			"match": match,
+			"terms": terms,
+		},
+	}
+	//解析数据到buf，再请求es查询
+	if err := json.NewEncoder(&buf).Encode(query); err != nil {
+		log.Fatalf("Error encoding query: %s", err)
+	}
+	fmt.Println("1", err)
+	// Perform the search request.
+	res, err = esClient.Search(
+		esClient.Search.WithContext(context.Background()),
+		esClient.Search.WithIndex(index),
+		esClient.Search.WithBody(&buf),
+		esClient.Search.WithTrackTotalHits(true),
+		esClient.Search.WithPretty(),
+	)
+	fmt.Println("2", err)
+	if err != nil {
+		log.Fatalf("Error getting response: %s", err)
+	}
+	defer res.Body.Close()
+	fmt.Println("3", res.Body)
+	if res.IsError() {
+		var e map[string]interface{}
+		if err := json.NewDecoder(res.Body).Decode(&e); err != nil {
+			log.Fatalf("Error parsing the response body: %s", err)
+		} else {
+			// Print the response status and error information.
+			log.Fatalf("[%s] %s: %s",
+				res.Status(),
+				e["error"].(map[string]interface{})["type"],
+				e["error"].(map[string]interface{})["reason"],
+			)
+		}
+	}
+	fmt.Println("4", err)
+	if err := json.NewDecoder(res.Body).Decode(&r); err != nil {
+		log.Fatalf("Error parsing the response body: %s", err)
+	}
+	// Print the response status, number of results, and request duration.
+	log.Printf(
+		"[%s] %d hits; took: %dms",
+		res.Status(),
+		int(r["hits"].(map[string]interface{})["total"].(map[string]interface{})["value"].(float64)),
+		int(r["took"].(float64)),
+	)
+	// Print the ID and document source for each hit.
+	for _, hit := range r["hits"].(map[string]interface{})["hits"].([]interface{}) {
+		log.Printf(" * ID=%s, %s", hit.(map[string]interface{})["_id"], hit.(map[string]interface{})["_source"])
+	}
+
+	log.Println(strings.Repeat("=", 37))
+
+	return r
 }
 
 // 新增订单 orderModel指定的属性

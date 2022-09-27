@@ -14,6 +14,7 @@ type OrderModel struct {
 	ShipCityName     string          `json:"ship_city_name"`
 	ShipCode         string          `json:"ship_code"`
 	ShipPhone        string          `json:"ship_phone"`
+	TotalPrice       float64         `json:"total_price"`
 	MiddleCreateTime utils.LocalTime `json:"middle_create_time"` //utils.LocalTime： 实现MarshalJSON接口，格式化数据
 }
 

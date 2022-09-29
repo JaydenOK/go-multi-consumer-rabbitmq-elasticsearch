@@ -29,7 +29,7 @@ func main() {
 
 	//启动服务
 	httpPort := viper.GetString("app.httpPort")
-	_ = r.Run(":" + string(httpPort))
+	_ = r.Run(":" + httpPort)
 }
 
 // 加载配置文件信息到viper

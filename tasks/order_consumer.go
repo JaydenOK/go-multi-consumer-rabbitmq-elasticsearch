@@ -19,11 +19,11 @@ import (
 )
 
 type OrderConsumer struct {
-	//监听交换机
+	//监听交换机名称
 	exchangeName string
-	//监听队列
+	//监听队列名称
 	queueName string
-	//启动的消费者数量
+	//启动的消费者数量，默认一个
 	taskNum int
 	//rabbitMQ连接对象
 	rabbitMQ *rabbitmqlib.RabbitMQ
@@ -38,37 +38,37 @@ func (orderConsumer *OrderConsumer) start() error {
 		orderConsumer.taskNum = 1
 	}
 	for index := 0; index < orderConsumer.taskNum; index++ {
-		go func(i int) {
-			if err := orderConsumer.rabbitMQ.ConsumeInit(
-				orderConsumer.exchangeName,
-				orderConsumer.queueName,
-			); err != nil {
-				fmt.Println(utils.StringToInterface(err.Error()))
-			}
-			delivery, err := orderConsumer.rabbitMQ.Consume(orderConsumer.queueName + strconv.Itoa(i))
-			if err != nil {
-				fmt.Println("消费异常：", utils.StringToInterface(err.Error()))
-			}
-			go func() {
-				for d := range delivery {
-					//只读，没数据时，处于阻塞状态
-					if err := orderConsumer.handle(d); err == nil {
-						//false 单条确认，true多条确认
-						_ = d.Ack(false)
-					} else {
-						//当 requeue 为真时，请求服务器将此消息传递给不同的
-						//消费者。 如果不可能或 requeue 为 false，则消息将是
-						//丢弃或交付到服务器配置的死信队列。
-						//
-						//此方法不得用于选择或重新排队客户端希望的消息
-						//不去处理，而是通知服务端客户端无能力
-						//在这个时候处理这个消息。
-						//_ = d.Nack(false, false)
-						_ = d.Ack(false)
-					}
+		//多个消费者，相同Channel连接，不同ConsumerTag
+		if err := orderConsumer.rabbitMQ.ConsumeInit(
+			orderConsumer.exchangeName,
+			orderConsumer.queueName,
+		); err != nil {
+			fmt.Println(utils.StringToInterface(err.Error()))
+		}
+		consumerTag := orderConsumer.queueName + strconv.Itoa(index)
+		delivery, err := orderConsumer.rabbitMQ.Consume(consumerTag)
+		if err != nil {
+			fmt.Println("消费异常：", utils.StringToInterface(err.Error()))
+		}
+		go func() {
+			for d := range delivery {
+				//只读，没数据时，处于阻塞状态
+				if err := orderConsumer.handle(d); err == nil {
+					//false 单条确认，true多条确认
+					_ = d.Ack(false)
+				} else {
+					//当 requeue 为真时，请求服务器将此消息传递给不同的
+					//消费者。 如果不可能或 requeue 为 false，则消息将是
+					//丢弃或交付到服务器配置的死信队列。
+					//
+					//此方法不得用于选择或重新排队客户端希望的消息
+					//不去处理，而是通知服务端客户端无能力
+					//在这个时候处理这个消息。
+					//_ = d.Nack(false, false)
+					_ = d.Ack(false)
 				}
-			}()
-		}(index)
+			}
+		}()
 	}
 
 	//if err := orderConsumer.rabbitMQ.ConsumeInit(

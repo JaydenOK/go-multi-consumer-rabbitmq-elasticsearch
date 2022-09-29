@@ -24,27 +24,26 @@ func (stockConsumer *StockConsumer) start() error {
 		stockConsumer.taskNum = 1
 	}
 	for index := 0; index < stockConsumer.taskNum; index++ {
-		go func(i int) {
-			if err := stockConsumer.rabbitMQ.ConsumeInit(
-				stockConsumer.exchangeName,
-				stockConsumer.queueName,
-			); err != nil {
-				fmt.Println(utils.StringToInterface(err.Error()))
-			}
-			delivery, err := stockConsumer.rabbitMQ.Consume(stockConsumer.queueName + strconv.Itoa(i))
-			if err != nil {
-				fmt.Println("消费异常：", utils.StringToInterface(err.Error()))
-			}
-			go func() {
-				for d := range delivery {
-					if err := stockConsumer.handle(d); err == nil {
-						_ = d.Ack(false)
-					} else {
-						_ = d.Ack(false)
-					}
+		if err := stockConsumer.rabbitMQ.ConsumeInit(
+			stockConsumer.exchangeName,
+			stockConsumer.queueName,
+		); err != nil {
+			fmt.Println(utils.StringToInterface(err.Error()))
+		}
+		consumerTag := stockConsumer.queueName + strconv.Itoa(index)
+		delivery, err := stockConsumer.rabbitMQ.Consume(consumerTag)
+		if err != nil {
+			fmt.Println("消费异常：", utils.StringToInterface(err.Error()))
+		}
+		go func() {
+			for d := range delivery {
+				if err := stockConsumer.handle(d); err == nil {
+					_ = d.Ack(false)
+				} else {
+					_ = d.Ack(false)
 				}
-			}()
-		}(index)
+			}
+		}()
 	}
 
 	return nil

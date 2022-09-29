@@ -55,7 +55,7 @@ func (rabbitMQ *RabbitMQ) SendMessage(message string, exchangeName string, queue
 	//autoDelete:是否自动删除，true表示是。至少有一条绑定才可以触发自动删除，当所有绑定都与交换器解绑后，会自动删除此交换器。
 	//internal:是否为内部，true表示是。客户端无法直接发送msg到内部交换器，只有交换器可以发送msg到内部交换器。
 	//noWait:是否非阻塞，true表示是。阻塞：表示创建交换器的请求发送后，阻塞等待RMQ Server返回信息。非阻塞：不会阻塞等待RMQ Server的返回信息，而RMQ Server也不会返回信息。（不推荐使用）
-	//args:直接写nil，没研究过，不解释。
+	//args:直接写nil
 	if err := rabbitMQ.channel.ExchangeDeclare(
 		rabbitMQ.exchangeName,
 		rabbitMQ.exchangeType,
@@ -105,7 +105,7 @@ func (rabbitMQ *RabbitMQ) SendMessage(message string, exchangeName string, queue
 	//key：路由键，对应图中RoutingKey。
 	//mandatory：直接false，不建议使用，后面有专门章节讲解。
 	//immediate ：直接false，不建议使用，后面有专门章节讲解。
-	//msg：要发送的消息，msg对应一个Publishing结构，Publishing结构里面有很多参数，这里只强调几个参数，其他参数暂时列出，但不解释。
+	//msg：要发送的消息，msg对应一个Publishing结构，Publishing结构里面有很多参数
 	err := rabbitMQ.channel.Publish(
 		rabbitMQ.exchangeName,
 		rabbitMQ.routeKey,
@@ -142,7 +142,7 @@ func (rabbitMQ *RabbitMQ) sendMessageTopic(message string, exchangeName string, 
 	//autoDelete：是否自动删除，true为是。至少有一个消费者连接到队列时才可以触发。当所有消费者都断开时，队列会自动删除。
 	//exclusive：是否设置排他，true为是。如果设置为排他，则队列仅对首次声明他的连接可见，并在连接断开时自动删除。（注意，这里说的是连接不是信道，相同连接不同信道是可见的）。
 	//nowait：是否非阻塞，true表示是。阻塞：表示创建交换器的请求发送后，阻塞等待RMQ Server返回信息。非阻塞：不会阻塞等待RMQ Server的返回信息，而RMQ Server也不会返回信息。（不推荐使用）
-	//args：直接写nil，没研究过，不解释。
+	//args：直接写nil
 
 }
 

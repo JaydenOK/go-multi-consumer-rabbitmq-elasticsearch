@@ -27,7 +27,12 @@ app:
 ```
 
 版本：
-```go
-go version 1.19
+```shell script
+go v1.19
 gin v1.8.1
+mysql v5.7
+rabbitmq v3.6.1
+elasticsearch v8.4.1
+#redis v3.2
+#mongo 
 ```

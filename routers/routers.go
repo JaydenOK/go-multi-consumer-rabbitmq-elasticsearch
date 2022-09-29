@@ -27,4 +27,21 @@ func InitRouter(r *gin.Engine) {
 		userGroup.POST("signOut", userController.SignOut)
 	}
 
+	//elastic search 相关
+	esGroup := r.Group("/es")
+	{
+		var esController controllers.EsController
+		esGroup.GET("indexLists", esController.IndexLists)
+		esGroup.GET("indexExist", esController.IndexExist)
+		esGroup.POST("indexCreate", esController.IndexCreate)
+		esGroup.GET("indexGetMapping", esController.IndexGetMapping)
+		esGroup.POST("indexPutMapping", esController.IndexPutMapping)
+		esGroup.POST("indexReindex", esController.IndexReindex)
+		esGroup.POST("indexDelete", esController.IndexDelete)
+		//别名
+		esGroup.GET("indexAliasLists", esController.IndexAliasLists)
+		esGroup.POST("indexAlias", esController.IndexAlias)
+
+	}
+
 }

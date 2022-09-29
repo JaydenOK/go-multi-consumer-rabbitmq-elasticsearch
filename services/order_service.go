@@ -110,7 +110,8 @@ func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
 	//sortList := make([]interface{}, 5)      //排序
 	//must := make([]interface{}, 20)         //多条件
 	var sortList []interface{}
-	var must []interface{}
+	var must []interface{}   //且查找
+	var should []interface{} //或查找
 
 	//分页
 	requestData["from"] = (page - 1) * pageSize
@@ -159,12 +160,23 @@ func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
 	//多条件等值查询，平台code查询，支持逗号分隔，terms 可指定多个字段
 	if platformCode != "" {
 		platformCodeList := strings.Split(platformCode, ",")
+		//查不到？？
 		platformCodeSearch := map[string]interface{}{
-			"term": map[string]interface{}{
+			"terms": map[string]interface{}{
 				"platform_code": platformCodeList,
 			},
 		}
 		must = append(must, platformCodeSearch)
+		//
+		//使用term形式在es中query或者aggs时，发现竟然查不到数据，反而match却可以。几经波折，发现，如果字段type是text类型，是不支持term形式的keyword方式查找的，
+		// 重新mapping，可以在该字段下加入keyword的fields，就可以实现term查找了。
+		//platformCodeSearch := map[string]interface{}{
+		//	"terms": map[string]interface{}{
+		//		"platform_code": platformCodeList,
+		//	},
+		//}
+		//should = append(should, platformCodeSearch)
+
 	}
 
 	//数值区间 {"query":{"range":{"price":{"gte":40,"lte":80,"boost":2}}}}
@@ -182,12 +194,12 @@ func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
 
 	//时间区间
 	if middleCreateTimeStart != "" && middleCreateTimeEnd != "" {
-		//{"range":{"birthday":{"from":"1990-10-10","to":"2000-05-01","include_lower":true,"include_upper":false}}}
+		//{"range":{"birthday":{"from":"2022-09-28 13:51:27","to":"2022-12-11 04:42:00","include_lower":true,"include_upper":false}}}
 		createTimeSearch := map[string]interface{}{
 			"range": map[string]interface{}{
-				"create_time": map[string]interface{}{
-					"from":          totalPriceStart,
-					"to":            totalPriceEnd,
+				"middle_create_time": map[string]interface{}{
+					"from":          middleCreateTimeStart,
+					"to":            middleCreateTimeEnd,
 					"include_lower": true,
 					"include_upper": false,
 				},
@@ -197,6 +209,7 @@ func (orderService *OrderService) EsLists(ctx *gin.Context) interface{} {
 	}
 
 	boolean["must"] = must
+	boolean["should"] = should
 	query["bool"] = boolean
 	requestData["query"] = query
 

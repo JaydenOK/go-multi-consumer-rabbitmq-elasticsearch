@@ -21,3 +21,6 @@ type OrderModel struct {
 func (orderModel *OrderModel) TableName() string {
 	return "yb_order"
 }
+
+//es设置mapping结构：
+//{"mappings":{"properties":{"account_id":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"id":{"type":"long"},"middle_create_time":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"date","format":"yyyy-MM-dd HH:mm:ss"},"order_id":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"text"},"order_status":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"platform_code":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"ship_city_name":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"ship_code":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"ship_country":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"ship_name":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"text"},"ship_phone":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"keyword"},"ship_street1":{"fields":{"keyword":{"ignore_above":256,"type":"keyword"}},"type":"text"},"total_price":{"type":"float"}}}}

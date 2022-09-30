@@ -52,3 +52,28 @@ func (t *LocalTime) Scan(v interface{}) error {
 func (t LocalTime) String() string {
 	return time.Time(t).Format(constants.TimeFormat)
 }
+
+// 获取当前时间戳 1664531446
+func GetCurrentTimestamp() int64 {
+	return time.Now().Unix()
+}
+
+// 获取毫秒时间戳 1664531446277
+func GetCurrentMilliTimestamp() int64 {
+	return time.Now().UnixMilli()
+}
+
+// 获取毫秒时间戳 1664531446277667
+func GetCurrentMicroTimestamp() int64 {
+	return time.Now().UnixMicro()
+}
+
+// 获取当前日期时间 2022-09-30 17:50:46
+func GetCurrentDateTime() string {
+	return time.Now().Format(constants.TimeFormat)
+}
+
+// 获取当前日期 2022-09-30
+func GetCurrentDate() string {
+	return time.Now().Format(constants.DateFormat)
+}

@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/spf13/viper"
 	"github.com/streadway/amqp"
+	"strconv"
 	"time"
 )
 
@@ -17,6 +18,20 @@ type RabbitMQ struct {
 	routeKey     string
 	bindKey      string
 	exchangeType string
+	//是否为消费者客户端(true)，默认生产者客户端(false)
+	isConsumerClient bool
+	//启动消费协程数
+	taskNum int
+	//是否已连接
+	isConnected bool
+	//是否在消费
+	isConsume bool
+	//rabbitMQ程序停止信号
+	done chan bool
+	//监听channel连接异常通知
+	notifyClose chan *amqp.Error
+	//消费者处理函数
+	consumerHandler func(delivery amqp.Delivery) error
 }
 
 func NewRabbitMQ() *RabbitMQ {
@@ -25,17 +40,22 @@ func NewRabbitMQ() *RabbitMQ {
 	username := viper.GetString("rabbitmq.username")
 	password := viper.GetString("rabbitmq.password")
 	url := "amqp://" + username + ":" + password + "@" + host + ":" + port + "/"
-	rabbitMQ := &RabbitMQ{
-		url: url,
-	}
+	rabbitMQ := &RabbitMQ{url: url}
 	_ = rabbitMQ.InitRabbitMQ()
 	return rabbitMQ
 }
 
+// 初始化rabbitMQ，连接及创建通道，连接失败，返回Error错误
+func (rabbitMQ *RabbitMQ) InitRabbitMQ() error {
+	err := rabbitMQ.connect()
+	return err
+}
+
 // 关闭
 func (rabbitMQ *RabbitMQ) close() {
-	defer rabbitMQ.connection.Close()
-	defer rabbitMQ.channel.Close()
+	rabbitMQ.channel.Close()
+	rabbitMQ.connection.Close()
+	rabbitMQ.done <- true
 }
 
 // 直接发送消息，direct模式，路由设置与队列名一致
@@ -157,13 +177,21 @@ func (rabbitMQ *RabbitMQ) sendMessageFanOut(message string, exchangeName string,
 }
 
 // 初始化rabbitMQ，连接及创建通道，连接失败，返回Error错误
-func (rabbitMQ *RabbitMQ) InitRabbitMQ() error {
+func (rabbitMQ *RabbitMQ) SetConsumerConfig(exchangeName, queueName string, taskNum int, consumerHandler func(delivery amqp.Delivery) error) *RabbitMQ {
+	rabbitMQ.exchangeName = exchangeName
+	rabbitMQ.queueName = queueName
+	rabbitMQ.taskNum = taskNum
+	rabbitMQ.consumerHandler = consumerHandler
+	return rabbitMQ
+}
+
+// 断线重连
+func (rabbitMQ *RabbitMQ) connect() error {
 	var err error
-	var v interface{}
+	//1，连接mq
 	if rabbitMQ.connection, err = amqp.Dial(rabbitMQ.url); err != nil {
 		fmt.Println("rabbitMQ连接异常：", err.Error())
-		v = "rabbitMQ连接异常，执行终止"
-		panic(v)
+		return err
 	}
 	//2,创建通道
 	if rabbitMQ.channel, err = rabbitMQ.connection.Channel(); err != nil {
@@ -171,10 +199,55 @@ func (rabbitMQ *RabbitMQ) InitRabbitMQ() error {
 			fmt.Println(err)
 		}
 		fmt.Println("rabbitMQ创建channel异常：", err.Error())
-		v = "rabbitMQ创建channel异常，执行终止"
-		panic(v)
+		return err
 	}
-	return err
+	rabbitMQ.isConnected = true
+	rabbitMQ.notifyClose = make(chan *amqp.Error)
+	//todo 注册监听channel异常通知
+	rabbitMQ.channel.NotifyClose(rabbitMQ.notifyClose)
+	return nil
+}
+
+// 断线重连
+func (rabbitMQ *RabbitMQ) reconnect() {
+	for {
+		//select阻塞
+		select {
+		case <-rabbitMQ.done:
+			//rabbitMQ程序终止，退出此协程
+			return
+		case <-rabbitMQ.notifyClose:
+		}
+		rabbitMQ.isConnected = false
+		rabbitMQ.isConsume = false
+		fmt.Println("接收到rabbitMQ连接异常")
+		//有接收到异常
+		for {
+			//程序重连，重试直至成功
+			if !rabbitMQ.isConnected {
+				if err := rabbitMQ.connect(); err != nil {
+					fmt.Println("重连RabbitMQ...", err.Error())
+					utils.WriteLog("重连RabbitMQ..." + err.Error())
+					time.Sleep(time.Second * 2)
+				} else {
+					fmt.Println("RabbitMQ重连成功")
+					utils.WriteLog("RabbitMQ重连成功...")
+				}
+			}
+			//重启消费，直至成功
+			if rabbitMQ.isConnected && !rabbitMQ.isConsume {
+				if err := rabbitMQ.ConsumeStart(); err != nil {
+					fmt.Println("重启消费失败...", err.Error())
+					utils.WriteLog("重启消费失败..." + err.Error())
+					time.Sleep(time.Second * 2)
+				} else {
+					fmt.Println("重启消费协程成功", err.Error())
+					utils.WriteLog("重启消费协程成功..." + err.Error())
+					break
+				}
+			}
+		}
+	}
 }
 
 // 初始化消费服务
@@ -226,7 +299,6 @@ func (rabbitMQ *RabbitMQ) ConsumeInit(exchangeName string, queueName string) err
 	return nil
 }
 
-// 消费
 func (rabbitMQ *RabbitMQ) Consume(consumerTag string) (<-chan amqp.Delivery, error) {
 	//只读信道，接收队列数据
 	var delivery <-chan amqp.Delivery
@@ -244,4 +316,55 @@ func (rabbitMQ *RabbitMQ) Consume(consumerTag string) (<-chan amqp.Delivery, err
 		return nil, err
 	}
 	return delivery, nil
+}
+
+// 启动消费
+func (rabbitMQ *RabbitMQ) ConsumeStart() error {
+	if rabbitMQ.taskNum == 0 {
+		rabbitMQ.taskNum = 1
+	}
+	for index := 0; index < rabbitMQ.taskNum; index++ {
+		//多个消费者，相同Channel连接，不同ConsumerTag
+		if err := rabbitMQ.ConsumeInit(
+			rabbitMQ.exchangeName,
+			rabbitMQ.queueName,
+		); err != nil {
+			fmt.Println(utils.StringToInterface(err.Error()))
+			return err
+		}
+		consumerTag := rabbitMQ.queueName + strconv.Itoa(index)
+		delivery, err := rabbitMQ.Consume(consumerTag)
+		if err != nil {
+			fmt.Println("消费异常：", utils.StringToInterface(err.Error()))
+			return err
+		}
+		go func() {
+			for d := range delivery {
+				//delivery 只读，没数据时，处于阻塞状态
+				if rabbitMQ.consumerHandler == nil {
+					fmt.Println("未初始化的处理函数：consumerHandler", string(d.Body))
+					_ = d.Ack(false)
+					continue
+				}
+				if err := rabbitMQ.consumerHandler(d); err == nil {
+					//false 单条确认，true多条确认
+					_ = d.Ack(false)
+				} else {
+					//当 requeue 为真时，请求服务器将此消息传递给不同的
+					//消费者。 如果不可能或 requeue 为 false，则消息将是
+					//丢弃或交付到服务器配置的死信队列。
+					//
+					//此方法不得用于选择或重新排队客户端希望的消息
+					//不去处理，而是通知服务端客户端无能力
+					//在这个时候处理这个消息。
+					//_ = d.Nack(false, false)
+					_ = d.Ack(false)
+				}
+			}
+		}()
+	}
+	rabbitMQ.isConsume = true
+	//启动协程检查消费是否有异常，并重启
+	go rabbitMQ.reconnect()
+	return nil
 }

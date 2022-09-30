@@ -2,7 +2,6 @@ package tasks
 
 import (
 	"app/constants"
-	"app/libs/rabbitmqlib"
 	"app/utils"
 	"fmt"
 )
@@ -18,7 +17,6 @@ func Run() {
 		exchangeName: constants.EventOrderChange,
 		queueName:    constants.QueueOrderChange,
 		taskNum:      3,
-		rabbitMQ:     rabbitmqlib.NewRabbitMQ(),
 	})
 
 	//添加库存任务程序
@@ -26,7 +24,6 @@ func Run() {
 		exchangeName: constants.EventStockChange,
 		queueName:    constants.QueueStockChange,
 		taskNum:      1,
-		rabbitMQ:     rabbitmqlib.NewRabbitMQ(),
 	})
 
 	taskManager.start()

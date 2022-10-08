@@ -26,6 +26,8 @@ type RabbitMQ struct {
 	isConnected bool
 	//是否在消费
 	isConsume bool
+	//是否已经创建监听连接协程
+	isReconnectCreated bool
 	//rabbitMQ程序停止信号
 	done chan bool
 	//监听channel连接异常通知
@@ -220,29 +222,36 @@ func (rabbitMQ *RabbitMQ) reconnect() {
 		}
 		rabbitMQ.isConnected = false
 		rabbitMQ.isConsume = false
-		fmt.Println("接收到rabbitMQ连接异常")
+		msg := rabbitMQ.exchangeName + "接收到rabbitMQ连接异常"
+		fmt.Println(msg)
+		utils.WriteLog(msg)
 		//有接收到异常
 		for {
 			//程序重连，重试直至成功
 			if !rabbitMQ.isConnected {
 				if err := rabbitMQ.connect(); err != nil {
-					fmt.Println("重连RabbitMQ...", err.Error())
-					utils.WriteLog("重连RabbitMQ..." + err.Error())
+					msg := "重连RabbitMQ..." + err.Error()
+					fmt.Println(msg)
+					utils.WriteLog(msg)
 					time.Sleep(time.Second * 2)
 				} else {
-					fmt.Println("RabbitMQ重连成功")
-					utils.WriteLog("RabbitMQ重连成功...")
+					msg := "RabbitMQ重连成功..."
+					fmt.Println(msg)
+					utils.WriteLog(msg)
 				}
 			}
-			//重启消费，直至成功
+			//连接rabbitMQ成功，但消费未重启，则重启消费，直至成功
 			if rabbitMQ.isConnected && !rabbitMQ.isConsume {
 				if err := rabbitMQ.ConsumeStart(); err != nil {
-					fmt.Println("重启消费失败...", err.Error())
-					utils.WriteLog("重启消费失败..." + err.Error())
+					msg := "重启消费失败..." + err.Error()
+					fmt.Println(msg)
+					utils.WriteLog(msg)
 					time.Sleep(time.Second * 2)
 				} else {
-					fmt.Println("重启消费协程成功", err.Error())
-					utils.WriteLog("重启消费协程成功..." + err.Error())
+					msg := rabbitMQ.exchangeName + "重启消费协程成功"
+					fmt.Println(msg)
+					utils.WriteLog(msg)
+					//重启消费成功，退出
 					break
 				}
 			}
@@ -364,7 +373,11 @@ func (rabbitMQ *RabbitMQ) ConsumeStart() error {
 		}()
 	}
 	rabbitMQ.isConsume = true
-	//启动协程检查消费是否有异常，并重启
-	go rabbitMQ.reconnect()
+	//检查是否已经有监测连接协程了
+	if rabbitMQ.isReconnectCreated == false {
+		//启动协程检查消费是否有异常，并重启
+		go rabbitMQ.reconnect()
+		rabbitMQ.isReconnectCreated = true
+	}
 	return nil
 }

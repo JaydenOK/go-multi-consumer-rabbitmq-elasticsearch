@@ -28,7 +28,9 @@ mongo:
   database: "hwc"
 
 rabbitmq:
-  host: "192.168.71.91"
+  #  host: "192.168.71.91"
+  #  vm
+  host: "192.168.31.200"
   port: 5672
   username: "admin"
   password: "admin123."

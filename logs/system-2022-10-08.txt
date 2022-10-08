@@ -1,0 +1,162 @@
+[2022-10-08 10:58:24]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:24]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:28]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:28]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:32]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:32]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:36]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:36]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:40]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:40]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:44]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:44]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:48]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:48]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:52]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:52]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:56]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:58:56]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:00]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:00]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:04]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:04]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:08]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:08]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:12]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:12]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:16]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:16]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:20]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:20]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:24]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:24]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:28]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:28]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:32]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:32]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:36]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:36]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:40]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:40]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:44]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:44]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:48]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:48]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:52]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:52]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:56]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 10:59:56]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:00]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:00]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:04]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:04]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:08]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:08]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:12]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:12]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:16]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:16]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:00:18]RabbitMQ重连成功...
+[2022-10-08 11:00:18]RabbitMQ重连成功...
+[2022-10-08 11:00:18]重启消费协程成功
+[2022-10-08 11:00:18]重启消费协程成功
+[2022-10-08 11:01:15]接收到rabbitMQ连接异常
+[2022-10-08 11:01:15]接收到rabbitMQ连接异常
+[2022-10-08 11:01:17]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:17]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:21]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:21]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:25]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:25]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:29]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:29]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:33]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:33]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:37]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:37]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:41]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:41]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:45]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:45]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:49]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:49]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:53]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:53]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:57]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:01:57]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:01]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:01]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:05]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:05]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:09]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:09]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:13]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:13]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:17]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:17]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:21]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:21]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:25]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:25]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:29]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:29]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:33]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:33]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:37]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:37]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:41]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:41]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:45]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:45]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:49]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:49]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:53]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:53]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:57]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:02:57]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:01]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:01]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:05]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:05]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:09]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:09]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:13]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:03:13]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:04:52]OrderChangeEx接收到rabbitMQ连接异常
+[2022-10-08 11:04:52]StockChangeEx接收到rabbitMQ连接异常
+[2022-10-08 11:04:54]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:04:54]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:04:58]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:04:58]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:02]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:02]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:06]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:06]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:10]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:10]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:14]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:14]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:18]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:18]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:22]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:22]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:26]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:26]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:05:28]RabbitMQ重连成功...
+[2022-10-08 11:05:28]RabbitMQ重连成功...
+[2022-10-08 11:05:28]重启消费协程成功
+[2022-10-08 11:05:28]重启消费协程成功
+[2022-10-08 11:06:40]OrderChangeEx接收到rabbitMQ连接异常
+[2022-10-08 11:06:40]StockChangeEx接收到rabbitMQ连接异常
+[2022-10-08 11:06:42]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:42]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:46]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:46]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:50]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:50]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:54]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:54]重连RabbitMQ...dial tcp 192.168.31.200:5672: connectex: No connection could be made because the target machine actively refused it.
+[2022-10-08 11:06:56]RabbitMQ重连成功...
+[2022-10-08 11:06:56]RabbitMQ重连成功...
+[2022-10-08 11:06:56]StockChangeEx重启消费协程成功
+[2022-10-08 11:06:56]OrderChangeEx重启消费协程成功

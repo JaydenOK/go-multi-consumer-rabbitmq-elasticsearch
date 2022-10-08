@@ -6,15 +6,18 @@ import (
 	"os"
 )
 
-const LogPath = "../logs/"
+// "./" 指当前工程目录下
+const LogPath = "./logs/"
 
 func WriteLog(str string) int {
-	filePath := LogPath + GetCurrentDate() + "-" + ".txt"
-	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
+	filePath := LogPath + "system-" + GetCurrentDate() + ".txt"
+	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 	if err != nil {
 		fmt.Println("打开日志文件失败：", err.Error())
 		return 0
 	}
+	//增加时间格式前缀及换行
+	str = "[" + GetCurrentDateTime() + "]" + str + "\n"
 	bytes := []byte(str)
 	size, err := file.Write(bytes)
 	if err != nil {

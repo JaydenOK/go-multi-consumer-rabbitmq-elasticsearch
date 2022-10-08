@@ -5,7 +5,7 @@
 gin框架，mvc架构（controller-service-model）
    
  ```shell script
-redis->mysql->rabbitmq(kafka)->go comsume->elasticsearch
+redis->mysql->rabbitmq(kafka)->go consume->elasticsearch
 ```
 
 项目架构：  

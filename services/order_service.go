@@ -29,6 +29,8 @@ func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 	platformCode := ctx.Query("platform_code")
 	middleCreateTimeStart := ctx.Query("middle_create_time_start")
 	middleCreateTimeEnd := ctx.Query("middle_create_time_end")
+	totalPriceStart := ctx.Query("total_price_start")
+	totalPriceEnd := ctx.Query("total_price_end")
 	if page < 0 {
 		page = 1
 	}
@@ -51,6 +53,12 @@ func (orderService *OrderService) Lists(ctx *gin.Context) interface{} {
 	}
 	if middleCreateTimeEnd != "" {
 		db = db.Where("middle_create_time <= ?", middleCreateTimeEnd)
+	}
+	if totalPriceStart != "" {
+		db = db.Where("total_price > ?", totalPriceStart)
+	}
+	if totalPriceEnd != "" {
+		db = db.Where("total_price <= ?", totalPriceEnd)
 	}
 	db.Offset((page - 1) * pageSize).Limit(pageSize).Order("id desc").Find(&orders)
 	return orders

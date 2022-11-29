@@ -29,7 +29,7 @@ type RabbitMQ struct {
 	//是否已经创建监听连接协程
 	isReconnectCreated bool
 	//rabbitMQ程序停止信号
-	done chan bool
+	signalStop chan bool
 	//监听channel连接异常通知
 	notifyClose chan *amqp.Error
 	//消费者处理函数
@@ -57,7 +57,7 @@ func (rabbitMQ *RabbitMQ) InitRabbitMQ() error {
 func (rabbitMQ *RabbitMQ) close() {
 	rabbitMQ.channel.Close()
 	rabbitMQ.connection.Close()
-	rabbitMQ.done <- true
+	rabbitMQ.signalStop <- true
 }
 
 // 直接发送消息，direct模式，路由设置与队列名一致
@@ -187,7 +187,7 @@ func (rabbitMQ *RabbitMQ) SetConsumerConfig(exchangeName, queueName string, task
 	return rabbitMQ
 }
 
-// 断线重连
+// 连接
 func (rabbitMQ *RabbitMQ) connect() error {
 	var err error
 	//1，连接mq
@@ -215,7 +215,7 @@ func (rabbitMQ *RabbitMQ) reconnect() {
 	for {
 		//select阻塞
 		select {
-		case <-rabbitMQ.done:
+		case <-rabbitMQ.signalStop:
 			//rabbitMQ程序终止，退出此协程
 			return
 		case <-rabbitMQ.notifyClose:
@@ -348,28 +348,55 @@ func (rabbitMQ *RabbitMQ) ConsumeStart() error {
 			return err
 		}
 		go func() {
-			for d := range delivery {
-				//delivery 只读，没数据时，处于阻塞状态
-				if rabbitMQ.consumerHandler == nil {
-					fmt.Println("未初始化的处理函数：consumerHandler", string(d.Body))
-					_ = d.Ack(false)
-					continue
-				}
-				if err := rabbitMQ.consumerHandler(d); err == nil {
-					//false 单条确认，true多条确认
-					_ = d.Ack(false)
-				} else {
-					//当 requeue 为真时，请求服务器将此消息传递给不同的
-					//消费者。 如果不可能或 requeue 为 false，则消息将是
-					//丢弃或交付到服务器配置的死信队列。
-					//
-					//此方法不得用于选择或重新排队客户端希望的消息
-					//不去处理，而是通知服务端客户端无能力
-					//在这个时候处理这个消息。
-					//_ = d.Nack(false, false)
-					_ = d.Ack(false)
+			for {
+				select {
+				case d := <-delivery:
+					//delivery 只读，没数据时，处于阻塞状态
+					if rabbitMQ.consumerHandler == nil {
+						fmt.Println("未初始化的处理函数：consumerHandler", string(d.Body))
+						_ = d.Ack(false)
+						continue
+					}
+					if err := rabbitMQ.consumerHandler(d); err == nil {
+						//false 单条确认，true多条确认
+						_ = d.Ack(false)
+					} else {
+						//当 requeue 为真时，请求服务器将此消息传递给不同的
+						//消费者。 如果不可能或 requeue 为 false，则消息将是
+						//丢弃或交付到服务器配置的死信队列。
+						//
+						//此方法不得用于选择或重新排队客户端希望的消息
+						//不去处理，而是通知服务端客户端无能力
+						//在这个时候处理这个消息。重回队列
+						_ = d.Nack(false, false)
+						//_ = d.Ack(false)
+					}
+				case s := <-rabbitMQ.signalStop:
+					fmt.Println("接收到终止信号停止消费：" + strconv.FormatBool(s))
 				}
 			}
+			//for d := range delivery {
+			//	//delivery 只读，没数据时，处于阻塞状态
+			//	if rabbitMQ.consumerHandler == nil {
+			//		fmt.Println("未初始化的处理函数：consumerHandler", string(d.Body))
+			//		_ = d.Ack(false)
+			//		continue
+			//	}
+			//	if err := rabbitMQ.consumerHandler(d); err == nil {
+			//		//false 单条确认，true多条确认
+			//		_ = d.Ack(false)
+			//	} else {
+			//		//当 requeue 为真时，请求服务器将此消息传递给不同的
+			//		//消费者。 如果不可能或 requeue 为 false，则消息将是
+			//		//丢弃或交付到服务器配置的死信队列。
+			//		//
+			//		//此方法不得用于选择或重新排队客户端希望的消息
+			//		//不去处理，而是通知服务端客户端无能力
+			//		//在这个时候处理这个消息。重回队列
+			//		_ = d.Nack(false, false)
+			//		//_ = d.Ack(false)
+			//	}
+			//}
 		}()
 	}
 	rabbitMQ.isConsume = true

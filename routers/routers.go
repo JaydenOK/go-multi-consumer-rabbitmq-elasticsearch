@@ -41,7 +41,14 @@ func InitRouter(r *gin.Engine) {
 		//别名
 		esGroup.GET("indexAliasLists", esController.IndexAliasLists)
 		esGroup.POST("indexAlias", esController.IndexAlias)
+	}
 
+	//consumer 相关
+	consumerGroup := r.Group("/consumer")
+	{
+		var consumerController controllers.ConsumerController
+		consumerGroup.GET("start", consumerController.StartConsumer)
+		consumerGroup.GET("stop", consumerController.StopConsumer)
 	}
 
 }

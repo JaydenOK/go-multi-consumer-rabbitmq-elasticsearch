@@ -52,3 +52,15 @@ func (taskManager *TaskManager) start() {
 		}
 	}
 }
+
+// 停止任务
+func (taskManager *TaskManager) Stop(taskName string) {
+	for _, task := range taskManager.taskPool {
+		if taskName == task.getName() {
+			//停止消费者
+			//delete() 删除map
+			taskManager.taskPool = taskManager.taskPool[1:4]
+			break
+		}
+	}
+}

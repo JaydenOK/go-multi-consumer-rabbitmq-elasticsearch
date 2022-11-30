@@ -8,6 +8,13 @@ import (
 type ConsumerService struct {
 }
 
+func (service ConsumerService) StopAll(ctx *gin.Context) interface{} {
+	//exchangeName := ctx.PostForm("exchange_name")
+	taskManager := &tasks.TaskManager{}
+	taskManager.StopAll()
+	return nil
+}
+
 func (service ConsumerService) StartConsumer(ctx *gin.Context) interface{} {
 	//exchangeName := ctx.PostForm("exchange_name")
 	//queneName := ctx.PostForm("queue_name")
@@ -19,6 +26,7 @@ func (service ConsumerService) StartConsumer(ctx *gin.Context) interface{} {
 
 func (service ConsumerService) StopConsumer(ctx *gin.Context) interface{} {
 	exchangeName := ctx.PostForm("exchange_name")
+	//todo 不属于同一个taskManager，不能控制已启动的任务，改用信号方式
 	taskManager := &tasks.TaskManager{}
 	//taskManager.StopTask(&tasks.ConsumerUint{
 	//	exchangeName: constants.EventStockChange,
@@ -26,6 +34,6 @@ func (service ConsumerService) StopConsumer(ctx *gin.Context) interface{} {
 	//	taskNum:      1,
 	//})
 
-	taskManager.Stop(exchangeName)
+	taskManager.StopConsumer(exchangeName)
 	return nil
 }

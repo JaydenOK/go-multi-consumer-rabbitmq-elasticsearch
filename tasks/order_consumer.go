@@ -32,6 +32,10 @@ func (orderConsumer *OrderConsumer) getName() string {
 	return "order_consumer"
 }
 
+func (orderConsumer *OrderConsumer) getRabbitMQ() *rabbitmqlib.RabbitMQ {
+	return orderConsumer.rabbitMQ
+}
+
 func (orderConsumer *OrderConsumer) start() error {
 	var err error
 	orderConsumer.rabbitMQ = rabbitmqlib.NewRabbitMQ()

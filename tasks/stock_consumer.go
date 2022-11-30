@@ -17,6 +17,10 @@ func (stockConsumer *StockConsumer) getName() string {
 	return "stock_consumer"
 }
 
+func (stockConsumer *StockConsumer) getRabbitMQ() *rabbitmqlib.RabbitMQ {
+	return stockConsumer.rabbitMQ
+}
+
 func (stockConsumer *StockConsumer) start() error {
 	var err error
 	stockConsumer.rabbitMQ = rabbitmqlib.NewRabbitMQ()

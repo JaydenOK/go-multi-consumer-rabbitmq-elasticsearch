@@ -44,11 +44,13 @@ func InitRouter(r *gin.Engine) {
 	}
 
 	//consumer 相关
+	//todo 未实现，改用信号方式
 	consumerGroup := r.Group("/consumer")
 	{
 		var consumerController controllers.ConsumerController
-		consumerGroup.GET("start", consumerController.StartConsumer)
-		consumerGroup.GET("stop", consumerController.StopConsumer)
+		consumerGroup.GET("startConsumer", consumerController.StartConsumer)
+		consumerGroup.GET("stopConsumer", consumerController.StopConsumer)
+		consumerGroup.GET("stopAll", consumerController.StopAll)
 	}
 
 }

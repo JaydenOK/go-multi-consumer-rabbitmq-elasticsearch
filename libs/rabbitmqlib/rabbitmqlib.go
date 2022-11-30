@@ -408,3 +408,7 @@ func (rabbitMQ *RabbitMQ) ConsumeStart() error {
 	}
 	return nil
 }
+
+func (rabbitMQ *RabbitMQ) ConsumeStop() {
+	rabbitMQ.signalStop <- true
+}

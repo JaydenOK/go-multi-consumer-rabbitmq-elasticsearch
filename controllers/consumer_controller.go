@@ -28,3 +28,12 @@ func (c *ConsumerController) StopConsumer(ctx *gin.Context) {
 	}
 	utils.SuccessResponse(ctx, returnData)
 }
+
+func (c *ConsumerController) StopAll(ctx *gin.Context) {
+	returnData := c.consumerService.StopAll(ctx)
+	if returnData == nil {
+		utils.FailResponse(ctx, nil)
+		return
+	}
+	utils.SuccessResponse(ctx, returnData)
+}

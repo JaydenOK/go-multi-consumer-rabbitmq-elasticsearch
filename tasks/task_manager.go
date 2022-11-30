@@ -53,13 +53,29 @@ func (taskManager *TaskManager) start() {
 	}
 }
 
+// 同一进程下操作
+func (taskManager *TaskManager) stop() {
+	for _, task := range taskManager.taskPool {
+		//停止所有消费者
+		task.getRabbitMQ().ConsumeStop()
+	}
+}
+
+// 同一进程下操作
+func (taskManager *TaskManager) StopAll() {
+	for _, task := range taskManager.taskPool {
+		//停止所有消费者
+		task.getRabbitMQ().ConsumeStop()
+	}
+}
+
 // 停止任务
-func (taskManager *TaskManager) Stop(taskName string) {
+func (taskManager *TaskManager) StopConsumer(taskName string) {
 	for _, task := range taskManager.taskPool {
 		if taskName == task.getName() {
 			//停止消费者
 			//delete() 删除map
-			taskManager.taskPool = taskManager.taskPool[1:4]
+			//taskManager.taskPool = taskManager.taskPool[1:4]
 			break
 		}
 	}

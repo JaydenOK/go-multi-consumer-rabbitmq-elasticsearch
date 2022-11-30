@@ -40,6 +40,63 @@ redis v3.2
 #mongo 
 ```
 
+### 启动
+```shell script
+系统配置如下：
+app: map[httpport:8080 httpurl:127.0.0.1:8080 logfile:logs/app.log rpcport:9001 websocketport:8089 websocketurl:127.0.0.1:8089]
+mysql: map[database:yb_new_hwc host:192.168.71.175 password:123456#Hsd1h port:3306 username:root]
+redis: map[host:192.168.71.238 password:654321 port:6379]
+mongo: map[database:hwc host:192.168.71.238 password:hwc@2018 port:27017 username:hwcuser]
+rabbitmq: map[host:192.168.71.91 password:admin123. port:5672 username:admin]
+elasticsearch: map[host:192.168.92.65 password: port:9200 username:]
+[GIN-debug] [WARNING] Creating an Engine instance with the Logger and Recovery middleware already attached.
+
+[GIN-debug] [WARNING] Running in "debug" mode. Switch to "release" mode in production.
+ - using env:	export GIN_MODE=release
+ - using code:	gin.SetMode(gin.ReleaseMode)
+
+[GIN-debug] GET    /order/list               --> app/controllers.(*OrderController).Lists-fm (3 handlers)
+[GIN-debug] GET    /order/esList             --> app/controllers.(*OrderController).EsLists-fm (3 handlers)
+[GIN-debug] POST   /order/add                --> app/controllers.(*OrderController).Add-fm (3 handlers)
+[GIN-debug] POST   /order/update             --> app/controllers.(*OrderController).Update-fm (3 handlers)
+[GIN-debug] POST   /order/delete             --> app/controllers.(*OrderController).Delete-fm (3 handlers)
+[GIN-debug] POST   /user/register            --> app/controllers.(*UserController).Register-fm (3 handlers)
+[GIN-debug] GET    /user/list                --> app/controllers.(*UserController).List-fm (3 handlers)
+[GIN-debug] POST   /user/signIn              --> app/controllers.(*UserController).SignIn-fm (3 handlers)
+[GIN-debug] POST   /user/signOut             --> app/controllers.(*UserController).SignOut-fm (3 handlers)
+[GIN-debug] GET    /es/indexLists            --> app/controllers.(*EsController).IndexLists-fm (3 handlers)
+[GIN-debug] GET    /es/indexExist            --> app/controllers.(*EsController).IndexExist-fm (3 handlers)
+[GIN-debug] POST   /es/indexCreate           --> app/controllers.(*EsController).IndexCreate-fm (3 handlers)
+[GIN-debug] GET    /es/indexGetMapping       --> app/controllers.(*EsController).IndexGetMapping-fm (3 handlers)
+[GIN-debug] POST   /es/indexPutMapping       --> app/controllers.(*EsController).IndexPutMapping-fm (3 handlers)
+[GIN-debug] POST   /es/indexReindex          --> app/controllers.(*EsController).IndexReindex-fm (3 handlers)
+[GIN-debug] POST   /es/indexDelete           --> app/controllers.(*EsController).IndexDelete-fm (3 handlers)
+[GIN-debug] GET    /es/indexAliasLists       --> app/controllers.(*EsController).IndexAliasLists-fm (3 handlers)
+[GIN-debug] POST   /es/indexAlias            --> app/controllers.(*EsController).IndexAlias-fm (3 handlers)
+[GIN-debug] GET    /consumer/startConsumer   --> app/controllers.(*ConsumerController).StartConsumer-fm (3 handlers)
+[GIN-debug] GET    /consumer/stopConsumer    --> app/controllers.(*ConsumerController).StopConsumer-fm (3 handlers)
+[GIN-debug] GET    /consumer/stopAll         --> app/controllers.(*ConsumerController).StopAll-fm (3 handlers)
+2022/11/30 09:42:21 [200 OK] {
+  "name" : "dcm_hk_getorder",
+添加消费者： order_consumer
+  "cluster_name" : "elasticsearch",
+添加消费者： stock_consumer
+  "cluster_uuid" : "zh7bym1uR8qMMJ1fRZVPgw",
+  "version" : {
+    "number" : "8.4.1",
+    "build_flavor" : "default",
+    "build_type" : "tar",
+    "build_hash" : "2bd229c8e56650b42e40992322a76e7914258f0c",
+    "build_date" : "2022-08-26T12:11:43.232597118Z",
+    "build_snapshot" : false,
+    "lucene_version" : "9.3.0",
+    "minimum_wire_compatibility_version" : "7.17.0",
+    "minimum_index_compatibility_version" : "7.0.0"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+
 ### 访问体验
 ```shell script
 原来的mysql访问列表地址: 
@@ -47,5 +104,4 @@ redis v3.2
 
 elasticsearch优化后, 直接查es接口: 
 127.0.0.1:8080/order/esList?page=1&pageSize=20&platform_code=AMAZON,EB&total_price_start=45&total_price_end=50
-
 ```

@@ -99,9 +99,34 @@ elasticsearch: map[host:192.168.92.65 password: port:9200 username:]
 
 ### 访问体验
 ```shell script
-原来的mysql访问列表地址: 
+新增/更新/删除订单, 异步推送rabbitmq, 启动添加的消费者order_consumer消费,并推送elasticsearch: 
+
+# 添加: 127.0.0.1:8080/order/add
+{
+    "order_id": "test0001",
+    "platform_code": "AMAZON",
+    "ship_name": "张珊",
+    "total_price": 30,
+    "order_status": "2",
+    "middle_create_time": "2022-10-08 00:00:00"
+}
+
+# 更新: 127.0.0.1:8080/order/update
+{
+    "order_id": "test3333",
+    "platform_code": "EB",
+    "ship_name": "james",
+    "ship_phone": "1888888835"
+}
+
+# 删除: 127.0.0.1:8080/order/delete
+order_id: test3333
+
+
+
+# 原来的mysql访问列表地址: 
 127.0.0.1:8080/order/list?page=1&pageSize=20&order_id=asd&platform_code=EB&total_price_start=45&total_price_end=50  
 
-elasticsearch优化后, 直接查es接口: 
+# 优化后, 直接查elasticsearch接口: 
 127.0.0.1:8080/order/esList?page=1&pageSize=20&platform_code=AMAZON,EB&total_price_start=45&total_price_end=50
 ```

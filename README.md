@@ -97,7 +97,7 @@ elasticsearch: map[host:192.168.92.65 password: port:9200 username:]
 }
 ```
 
-### 访问体验
+### 列表访问体验
 ```shell script
 新增/更新/删除订单, 异步推送rabbitmq, 启动添加的消费者order_consumer消费,并推送elasticsearch: 
 
@@ -129,4 +129,38 @@ order_id: test3333
 
 # 优化后, 直接查elasticsearch接口: 
 127.0.0.1:8080/order/esList?page=1&pageSize=20&platform_code=AMAZON,EB&total_price_start=45&total_price_end=50
+```
+
+
+### 订单接口相关操作接口:
+```shell script
+127.0.0.1:8080/order/list
+
+127.0.0.1:8080/order/add
+
+127.0.0.1:8080/order/update
+
+127.0.0.1:8080/order/delete
+```
+
+
+
+### ES索引，文档相关操作接口:
+```shell script
+127.0.0.1:8080127.0.0.1:8080/es/indexLists
+
+127.0.0.1:8080/es/indexExist?index=aaa
+
+127.0.0.1:8080/es/indexGetMapping?index=yb_order
+
+127.0.0.1:8080/es/indexPutMapping?index=yb_order
+
+127.0.0.1:8080/es/indexReindex?source_index=order&dest_index=orders
+
+127.0.0.1:8080/es/indexDelete?index=test_aaa
+
+127.0.0.1:8080/es/indexAliasLists?index=order
+
+127.0.0.1:8080/es/indexAlias?index=order&alias=yb_order
+
 ```

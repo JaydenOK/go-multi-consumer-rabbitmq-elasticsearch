@@ -10,7 +10,7 @@ import (
 const LogPath = "./logs/"
 
 func WriteLog(str string) int {
-	filePath := LogPath + "system-" + GetCurrentDate() + ".txt"
+	filePath := LogPath + "app-" + GetCurrentDate() + ".log"
 	file, err := os.OpenFile(filePath, os.O_CREATE|os.O_APPEND|os.O_WRONLY, 0777)
 	if err != nil {
 		fmt.Println("打开日志文件失败：", err.Error())

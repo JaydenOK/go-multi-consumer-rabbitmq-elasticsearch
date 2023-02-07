@@ -31,7 +31,7 @@ app:
 
 ### 版本：
 ```shell script
-go v1.19
+go v1.19.1
 gin v1.8.1
 mysql v5.7
 rabbitmq v3.6.1
@@ -42,7 +42,27 @@ redis v3.2
 
 ### 启动
 ```shell script
-系统配置如下：
+编译脚本运行:
+[root@ac_web jayden]# ./build.sh 
+input appName:order_service
+input run env[dev|test|prod]:dev
+
+ check again>  appName:order_service, env:dev
+go build ...
+build success
+start compile and run server?[y/n]y
+server started
+[root@ac_web jayden]# 
+[root@ac_web jayden]# 
+
+[root@ac_web jayden]#  ./manage.sh status order_service dev
+server running, pid: 14654
+
+```
+
+
+```
+系统配置如下:
 app: map[httpport:8080 httpurl:127.0.0.1:8080 logfile:logs/app.log rpcport:9001 websocketport:8089 websocketurl:127.0.0.1:8089]
 mysql: map[database:yb_new_hwc host:192.168.71.175 password:123456#Hsd1h port:3306 username:root]
 redis: map[host:192.168.71.238 password:654321 port:6379]
@@ -78,9 +98,9 @@ elasticsearch: map[host:192.168.92.65 password: port:9200 username:]
 [GIN-debug] GET    /consumer/stopAll         --> app/controllers.(*ConsumerController).StopAll-fm (3 handlers)
 2022/11/30 09:42:21 [200 OK] {
   "name" : "dcm_hk_getorder",
-添加消费者： order_consumer
+添加消费者: order_consumer
   "cluster_name" : "elasticsearch",
-添加消费者： stock_consumer
+添加消费者: stock_consumer
   "cluster_uuid" : "zh7bym1uR8qMMJ1fRZVPgw",
   "version" : {
     "number" : "8.4.1",

@@ -39,7 +39,7 @@ func (taskManager *TaskManager) AddTask(consumer Consumer) {
 		}
 	}
 	if !isExist {
-		fmt.Println("添加消费者：", consumer.getName())
+		fmt.Println("添加消费者:", consumer.getName())
 		taskManager.taskPool = append(taskManager.taskPool, consumer)
 	}
 }

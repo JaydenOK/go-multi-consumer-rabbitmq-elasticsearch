@@ -39,7 +39,7 @@ func main() {
 	//1，启动Server
 	//_ = r.Run(":" + httpPort)
 
-	//2，使用http.Server内置的Shutdown()方法优雅地关机
+	//2，使用http.Server内置的Shutdown()方法优雅地启动与关机
 	gracefulRun(r, httpPort)
 }
 
@@ -54,6 +54,8 @@ func loadConfig() {
 	configName := "app.dev"
 	switch *env {
 	case "dev":
+		configName = "app.dev"
+	case "test":
 		configName = "app.test"
 	case "prod":
 		configName = "app"
@@ -64,9 +66,9 @@ func loadConfig() {
 	if err := viper.ReadInConfig(); err != nil {
 		panic(utils.StringToInterface(err.Error()))
 	}
-	fmt.Println("系统配置如下：")
+	fmt.Println("系统配置如下:")
 	fmt.Println("app:", viper.Get("app"))
-	fmt.Println("env:", env)
+	fmt.Println("env:", *env)
 	fmt.Println("mysql:", viper.Get("mysql"))
 	fmt.Println("redis:", viper.Get("redis"))
 	fmt.Println("mongo:", viper.Get("mongo"))
@@ -74,7 +76,7 @@ func loadConfig() {
 	fmt.Println("elasticsearch:", viper.Get("elasticsearch"))
 }
 
-// 优雅地启动
+// 优雅启动与关机
 func gracefulRun(r *gin.Engine, httpPort string) {
 	srv := &http.Server{
 		Addr:    ":" + httpPort,

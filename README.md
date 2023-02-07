@@ -97,7 +97,7 @@ elasticsearch: map[host:192.168.92.65 password: port:9200 username:]
 }
 ```
 
-### 列表访问体验
+### 访问体验
 ```shell script
 新增/更新/删除订单, 异步推送rabbitmq, 启动添加的消费者order_consumer消费,并推送elasticsearch: 
 
@@ -121,18 +121,65 @@ elasticsearch: map[host:192.168.92.65 password: port:9200 username:]
 
 # 删除: 127.0.0.1:8080/order/delete
 order_id: test3333
+```
 
-
+### 查询
+```
 
 # 原来的mysql访问列表地址: 
 127.0.0.1:8080/order/list?page=1&pageSize=20&order_id=asd&platform_code=EB&total_price_start=45&total_price_end=50  
 
 # 优化后, 直接查elasticsearch接口: 
 127.0.0.1:8080/order/esList?page=1&pageSize=20&platform_code=AMAZON,EB&total_price_start=45&total_price_end=50
+
+{
+    "data": {
+        "page": 1,
+        "page_size": 20,
+        "records": [
+            {
+                "account_id": "",
+                "id": 24733978,
+                "middle_create_time": "2022-04-11 00:11:13",
+                "order_id": "test00010",
+                "order_status": "1",
+                "platform_code": "AMAZON",
+                "ship_city_name": "",
+                "ship_code": "",
+                "ship_country": "",
+                "ship_name": "rsgdsgddsf",
+                "ship_phone": "",
+                "ship_street1": "",
+                "total_price": 45
+            },
+            {
+                "account_id": "",
+                "id": 24733683,
+                "middle_create_time": "2022-10-21 00:11:13",
+                "order_id": "test00008",
+                "order_status": "35",
+                "platform_code": "AMAZON",
+                "ship_city_name": "",
+                "ship_code": "",
+                "ship_country": "",
+                "ship_name": "王三呀",
+                "ship_phone": "",
+                "ship_street1": "",
+                "total_price": 45.32
+            }
+        ],
+        "total": {
+            "relation": "eq",
+            "value": 2
+        }
+    },
+    "message": "success",
+    "status": 1
+}
 ```
 
 
-### 订单接口相关操作接口:
+### 其它订单接口相关操作接口:
 ```shell script
 127.0.0.1:8080/order/list
 
@@ -145,7 +192,7 @@ order_id: test3333
 
 
 
-### ES索引，文档相关操作接口:
+### 其它ES索引，文档相关操作接口:
 ```shell script
 127.0.0.1:8080127.0.0.1:8080/es/indexLists
 

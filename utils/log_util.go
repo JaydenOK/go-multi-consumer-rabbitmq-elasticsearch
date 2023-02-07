@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-// "./" 指当前工程目录下
+// 日志记录 "./" 指当前工程目录下
 const LogPath = "./logs/"
 
 func WriteLog(str string) int {

@@ -8,6 +8,7 @@ import (
 	"app/tasks"
 	"app/utils"
 	"context"
+	"flag"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/viper"
@@ -39,6 +40,42 @@ func main() {
 	//_ = r.Run(":" + httpPort)
 
 	//2，使用http.Server内置的Shutdown()方法优雅地关机
+	gracefulRun(r, httpPort)
+}
+
+// 加载配置文件信息到viper
+func loadConfig() {
+	envList := []string{"dev", "test", "prod"}
+	env := flag.String("env", "dev", "input run env[dev|test|prod]:")
+	flag.Parse()
+	if f := utils.InSlice(envList, *env); false == f {
+		panic(utils.StringToInterface("env input error"))
+	}
+	configName := "app.dev"
+	switch *env {
+	case "dev":
+		configName = "app.test"
+	case "prod":
+		configName = "app"
+	}
+	viper.SetConfigName(configName)
+	viper.SetConfigType("yaml")
+	viper.AddConfigPath("config")
+	if err := viper.ReadInConfig(); err != nil {
+		panic(utils.StringToInterface(err.Error()))
+	}
+	fmt.Println("系统配置如下：")
+	fmt.Println("app:", viper.Get("app"))
+	fmt.Println("env:", env)
+	fmt.Println("mysql:", viper.Get("mysql"))
+	fmt.Println("redis:", viper.Get("redis"))
+	fmt.Println("mongo:", viper.Get("mongo"))
+	fmt.Println("rabbitmq:", viper.Get("rabbitmq"))
+	fmt.Println("elasticsearch:", viper.Get("elasticsearch"))
+}
+
+// 优雅地启动
+func gracefulRun(r *gin.Engine, httpPort string) {
 	srv := &http.Server{
 		Addr:    ":" + httpPort,
 		Handler: r,
@@ -61,21 +98,4 @@ func main() {
 		log.Fatal("Server Shutdown:", err)
 	}
 	log.Println("Server exiting")
-}
-
-// 加载配置文件信息到viper
-func loadConfig() {
-	viper.SetConfigName("app")
-	viper.SetConfigType("yaml")
-	viper.AddConfigPath("config")
-	if err := viper.ReadInConfig(); err != nil {
-		panic(utils.StringToInterface(err.Error()))
-	}
-	fmt.Println("系统配置如下：")
-	fmt.Println("app:", viper.Get("app"))
-	fmt.Println("mysql:", viper.Get("mysql"))
-	fmt.Println("redis:", viper.Get("redis"))
-	fmt.Println("mongo:", viper.Get("mongo"))
-	fmt.Println("rabbitmq:", viper.Get("rabbitmq"))
-	fmt.Println("elasticsearch:", viper.Get("elasticsearch"))
 }

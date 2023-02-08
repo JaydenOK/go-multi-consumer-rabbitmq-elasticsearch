@@ -42,21 +42,21 @@ redis v3.2
 
 ### 启动
 ```shell script
-编译脚本运行:
+程序构建及启动:
 [root@ac_web jayden]# ./build.sh 
-input appName:order_service
-input run env[dev|test|prod]:dev
+input app name:myapp
+input environment[dev|test|prod]:dev
 
- check again>  appName:order_service, env:dev
+check again > app name:myapp, environment:dev
+continue build?[y/n]y
 go build ...
 build success
-start compile and run server?[y/n]y
+start server now?[y/n]y
 server started
-[root@ac_web jayden]# 
-[root@ac_web jayden]# 
-
-[root@ac_web jayden]#  ./manage.sh status order_service dev
-server running, pid: 14654
+[root@ac_web jayden]# ./manage.sh status myapp dev
+server running, pid: 1409
+[root@ac_web jayden]# ./manage.sh list
+root 1409 0.1 0.1 1067472 14492 pts/0 Sl 11:50 0:00 /root/go/jayden/bin/myapp_dev_go_app -env dev
 
 ```
 

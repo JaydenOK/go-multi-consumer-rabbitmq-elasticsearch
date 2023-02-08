@@ -1,26 +1,23 @@
 #!/bin/bash
-
-scriptDir=$(
-  cd $(dirname $0)
-  pwd
-)
+source functions.sh
 
 function start() {
   pId=$(ps aux | grep $targetFile | grep -v grep | awk '{print $2}')
   if [[ $pId != "" ]]; then
-    echo "kill exist process pid: {$pid}"
+    echo "kill exist server, pid: ${pid}"
     kill -9 $pId
   fi
   # run server in backstage daemon
-  nohup $targetFile -env ${env} >>${logFile} 2>&1 &
+  nohup $binDir/$targetFile -env ${env} >>${logFile} 2>&1 &
   echo "server started"
 }
 
 function stop() {
   pId=$(ps aux | grep $targetFile | grep -v grep | awk '{print $2}')
   if [[ $pId != "" ]]; then
-    echo "kill exist server process, pid: {$pid}"
+    echo "kill server, pid: ${pid}"
     kill -9 $pId
+    echo "done"
   else
     echo "server not running"
   fi
@@ -29,9 +26,18 @@ function stop() {
 function status() {
   pId=$(ps aux | grep $targetFile | grep -v grep | awk '{print $2}')
   if [[ $pId != "" ]]; then
-    echo "server running, pid: {$pId}"
+    echo "server running, pid: ${pId}"
   else
     echo "server not running"
+  fi
+}
+
+function list() {
+  msg=$(ps aux | grep $outputSuffix | grep -v grep)
+  if [[ $msg == "" ]]; then
+    echo "no server running"
+  else
+    echo $msg
   fi
 }
 
@@ -39,29 +45,40 @@ function status() {
 # ./manage.sh stop myapp dev
 # ./manage.sh start myapp dev
 # ./manage.sh status myapp dev
+# ./manage.sh list
+
+scriptDir=$(
+  cd $(dirname $0)
+  pwd
+)
 
 appRoot=$scriptDir
 binDir=${appRoot}/bin
 logRir=${appRoot}/logs
+outputSuffix=go_app
 
 cmd=$1
 appName=$2
 env=$3
 
-if [[ $cmd == "" || $appName == "" || $env == "" ]]; then
-  echo 'command usage:./manage.sh cmd[start|stop|status] app[appName] env[dev|test|prod]'
+if [[ $cmd == "" || $cmd != "list" && ($appName == "" || $env == "") ]]; then
+  echo 'usage: ./manage.sh cmd[start|stop|status] app[appName] env[dev|test|prod]'
   exit
 fi
 
-targetFile=$logRir/${appName}_go_app
+targetFile=${appName}_${env}_${outputSuffix}
 logFile=${targetFile}_$(date '+%Y-%m').log
 
-envList=("dev","test","prod")
-if [[ "${envList[@]}" =~ "${env}" ]]; then
-   echo ""
-else
-    echo "env not config:{$env}"
-    exit
+cmdList=("start" "stop" "status" "list")
+if [[ $(inArray ${cmd} "${cmdList[*]}") != 1 ]]; then
+  echo "cmd not exist:${cmd}"
+  exit
+fi
+
+envList=("dev" "test" "prod")
+if [[ $cmd != "list" && $(inArray ${env} "${envList[*]}") != 1 ]]; then
+  echo "env not exist:${env}"
+  exit
 fi
 
 case $cmd in
@@ -74,7 +91,10 @@ case $cmd in
 "status")
   status
   ;;
+"list")
+  list
+  ;;
 *)
-  echo 'error'
+  echo 'error cmd'
   ;;
 esac

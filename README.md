@@ -6,7 +6,7 @@
 直接查es，解决大数据查询慢的问题。 gin框架，mvc架构（controller-service-model）
 ```
 
-### -- 
+### 业务流
  ```shell script
 gin->redis->mysql->rabbitmq(kafka)->go consumer->elasticsearch
 ```
@@ -16,17 +16,20 @@ gin->redis->mysql->rabbitmq(kafka)->go consumer->elasticsearch
 app:
     config: app.yaml 项目核心配置
     constants: 常量配置
-    controllers 控制器l
+    controllers 控制器
     events 事件
     libs 类库
-    logs 运行日志
+    logs 系统日志
     models 模型
     routers 路由
     services 服务层
     utils 助手类库 
-    tasks 消费者监听任务 
+    tasks 消费者监听任务模块
+    views 视图 
+    bin 编译输出文件目录
 
-    main.go 程序入口文件
+    main.go 程序入口文件  
+    build.sh 程序构建编译脚本 
 ```
 
 ### 版本：

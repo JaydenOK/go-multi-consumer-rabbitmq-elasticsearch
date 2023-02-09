@@ -10,8 +10,8 @@ app:
 mysql:
   host: "192.168.71.175"
   port: 3306
-  username: "test"
-  password: "test"
+  username: "lizuobing"
+  password: "lizuobing#Hsd1h"
   database: "yb_new_hwc"
 
 redis:

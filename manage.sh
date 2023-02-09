@@ -15,7 +15,7 @@ function start() {
 function stop() {
   pId=$(ps aux | grep $targetFile | grep -v grep | awk '{print $2}')
   if [[ $pId != "" ]]; then
-    echo "kill server, pid: ${pid}"
+    echo "kill server, pid: ${$pId}"
     kill -9 $pId
     echo "done"
   else

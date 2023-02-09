@@ -53,9 +53,11 @@ go build ...
 build success
 start server now?[y/n]y
 server started
-[root@ac_web jayden]# ./manage.sh status myapp dev
+
+[root@ac_web jayden]# ./manage.sh status myapp dev  
 server running, pid: 1409
-[root@ac_web jayden]# ./manage.sh list
+
+[root@ac_web jayden]# ./manage.sh list  
 root 1409 0.1 0.1 1067472 14492 pts/0 Sl 11:50 0:00 /root/go/jayden/bin/myapp_dev_go_app -env dev
 
 ```

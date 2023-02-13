@@ -8,6 +8,7 @@ function start() {
     kill -9 $pId
   fi
   # run server in backstage daemon
+  logFile=$logRir/${targetFile}_$(date '+%Y-%m').log
   nohup $binDir/$targetFile -env ${env} >>${logFile} 2>&1 &
   echo "server started"
 }
@@ -15,7 +16,7 @@ function start() {
 function stop() {
   pId=$(ps aux | grep $targetFile | grep -v grep | awk '{print $2}')
   if [[ $pId != "" ]]; then
-    echo "kill server, pid: ${$pId}"
+    echo "kill server, pid: ${pId}"
     kill -9 $pId
     echo "done"
   else

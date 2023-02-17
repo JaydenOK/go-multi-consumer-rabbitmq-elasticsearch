@@ -29,6 +29,8 @@ func main() {
 
 	//初始化http路由
 	r := gin.Default()
+	//设置生产环境运行
+	//gin.SetMode(gin.ReleaseMode)
 	routers.InitRouter(r)
 	elasticsearchlib.InitESClient()
 	//启动消费者监听协程
@@ -67,8 +69,8 @@ func loadConfig() {
 		panic(utils.StringToInterface(err.Error()))
 	}
 	fmt.Println("系统配置如下:")
-	fmt.Println("app:", viper.Get("app"))
 	fmt.Println("env:", *env)
+	fmt.Println("app:", viper.Get("app"))
 	fmt.Println("mysql:", viper.Get("mysql"))
 	fmt.Println("redis:", viper.Get("redis"))
 	fmt.Println("mongo:", viper.Get("mongo"))

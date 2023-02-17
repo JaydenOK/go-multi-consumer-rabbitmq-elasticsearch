@@ -63,7 +63,7 @@ appName=$2
 env=$3
 
 if [[ $cmd == "" || $cmd != "list" && ($appName == "" || $env == "") ]]; then
-  echo 'usage: ./manage.sh cmd[start|stop|status] app[appName] env[dev|test|prod]'
+  echo 'usage: ./manage.sh cmd[start|stop|status|list] app[appName] env[dev|test|prod]'
   exit
 fi
 

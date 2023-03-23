@@ -1,9 +1,9 @@
-# go-gin-multi-consumer-mysql-rabbitmq-elasticsearch  
+# go-gin-multi-consumer-rabbitmq-elasticsearch  
 
-## 说明
+## 多消费者异步消息服务
 ```text script
-本项目流程及目的：gin框架，业务数据保存mysql后，发送rabbitmq，启动go协程消费队列数据，将数据推送到es，业务多条件查询时，
-直接查es，解决大数据查询慢的问题。 gin框架，mvc架构（controller-service-model）
+数据保存mysql后，发送到rabbitmq，启动go协程消费队列数据，将数据推送到elasticsearch  
+业务多条件查询时，直接查es，解决大数据查询慢的问题。 gin框架，mvc架构（controller-service-model-view）
 ```
 
 ### 业务流

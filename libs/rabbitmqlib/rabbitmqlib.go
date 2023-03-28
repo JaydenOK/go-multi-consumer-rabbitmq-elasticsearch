@@ -55,7 +55,9 @@ func (rabbitMQ *RabbitMQ) InitRabbitMQ() error {
 
 // 关闭
 func (rabbitMQ *RabbitMQ) close() {
-	rabbitMQ.channel.Close()
+	if e := rabbitMQ.channel.Close(); e != nil {
+		fmt.Println("channel close err:", e.Error())
+	}
 	rabbitMQ.connection.Close()
 	rabbitMQ.signalStop <- true
 }
